@@ -105,3 +105,9 @@ input, select {
 form .p-dropdown, .p-calendar{
   width: 100%;
 }
+
+button.regular-button {
+  font-size: 10pt;
+  width: 200px;
+  padding: 5px;
+}

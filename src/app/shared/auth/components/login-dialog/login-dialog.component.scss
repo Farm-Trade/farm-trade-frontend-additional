@@ -1,0 +1,25 @@
+.login-dialog-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h2 {
+    font-size: 19px;
+  }
+  input {
+    margin-top: .7em;
+  }
+  button {
+    margin-top: .7em;
+  }
+
+  p {
+    margin-top: 2.5em;
+    font-size: 9pt;
+    a {
+      cursor: pointer;
+      text-decoration: underline;
+      color: #1A73E8;
+    }
+  }
+}

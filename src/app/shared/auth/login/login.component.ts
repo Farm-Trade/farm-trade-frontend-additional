@@ -1,15 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {DialogService} from "primeng/dynamicdialog";
+import {Subscription} from "rxjs";
+import {LoginDialogComponent} from "../components/login-dialog/login-dialog.component";
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-auth',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+  private readonly subscriptions: Subscription;
 
-  ngOnInit(): void {
+  constructor(
+    private readonly dialogService: DialogService
+  ) {
+    this.subscriptions = new Subscription();
   }
 
+  public ngOnInit(): void {
+  }
+
+  public ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  public login(): void {
+    this.dialogService.open(
+      LoginDialogComponent,
+      {
+        width: '430px',
+        height: '400px'
+      }
+    );
+  }
 }

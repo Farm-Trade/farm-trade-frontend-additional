@@ -6,6 +6,7 @@ import {ButtonModule} from "primeng/button";
 import {DynamicDialogModule} from "primeng/dynamicdialog";
 import {SharedModule} from "primeng/api";
 import {RippleModule} from "primeng/ripple";
+import {InputMaskModule} from "primeng/inputmask";
 
 
 
@@ -15,7 +16,8 @@ import {RippleModule} from "primeng/ripple";
     InputTextModule,
     ButtonModule,
     DynamicDialogModule,
-    SharedModule
+    SharedModule,
+    InputMaskModule
   ],
   exports: [
     MenubarModule,
@@ -23,7 +25,8 @@ import {RippleModule} from "primeng/ripple";
     ButtonModule,
     DynamicDialogModule,
     SharedModule,
-    RippleModule
+    RippleModule,
+    InputMaskModule
   ]
 })
 export class PrimeNgModule { }

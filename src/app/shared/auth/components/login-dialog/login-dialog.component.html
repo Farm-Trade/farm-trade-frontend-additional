@@ -1,0 +1,37 @@
+<div class="login-dialog-box" [formGroup]="form">
+  <h2>Увійдіть</h2>
+  <p-inputMask
+    mask="(999) 999-9999"
+    placeholder="Телефон"
+    [formControl]="form | getControl : loginForm.PHONE"
+  ></p-inputMask>
+  <input *ngIf="nextButtonPressed" type="password" pInputText [formControl]="form | getControl : loginForm.PASSWORD">
+  <button
+    *ngIf="!nextButtonPressed"
+    pButton
+    pRipple
+    type="button"
+    label="Далі"
+    class="p-button-rounded regular-button"
+    (click)="nextButtonPressed = !nextButtonPressed"
+    [disabled]="(form | getControl : loginForm.PHONE).invalid"
+  ></button>
+  <button
+    *ngIf="nextButtonPressed"
+    pButton
+    pRipple
+    type="button"
+    label="Ввійти"
+    class="p-button-rounded regular-button"
+    (click)="login()"
+    [disabled]="form.invalid || form.disabled"
+  ></button>
+  <button
+    pButton
+    pRipple
+    type="button"
+    label="Забули Пароль?"
+    class="p-button-outlined p-button-rounded p-button-secondary regular-button"
+  ></button>
+  <p>Не маєте профілю? <a>Зареєструватись</a></p>
+</div>
