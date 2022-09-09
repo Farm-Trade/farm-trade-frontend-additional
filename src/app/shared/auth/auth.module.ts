@@ -14,6 +14,6 @@ import {AuthService} from "../services/auth.service";
     LoginDialogComponent
   ],
   imports: [SharedCustomModule, CommonModule],
-  providers: [DialogService, FormBuilder, AuthService]
+  providers: [DialogService, FormBuilder]
 })
 export class AuthModule { }

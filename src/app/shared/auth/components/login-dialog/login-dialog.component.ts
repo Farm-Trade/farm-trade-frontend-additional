@@ -5,6 +5,8 @@ import {AuthenticationDto} from "../../../entities/auth/authentication-dto.model
 import {AuthService} from "../../../services/auth.service";
 import {catchError, finalize, throwError} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
+import {Router} from "@angular/router";
+import {DynamicDialogRef} from "primeng/dynamicdialog";
 
 @Component({
   selector: 'app-auth-dialog',
@@ -19,8 +21,10 @@ export class LoginDialogComponent implements OnInit {
   public loginForm;
 
   constructor(
+    private readonly ref: DynamicDialogRef,
     private readonly fb: FormBuilder,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly router: Router
   ) {
     this.nextButtonPressed = false;
     this.loginForm = LoginFrom;
@@ -40,10 +44,12 @@ export class LoginDialogComponent implements OnInit {
     const authenticationDto: AuthenticationDto = AuthenticationDto.fromObject(values);
     this.authService.login(authenticationDto).pipe(
       catchError((error: HttpErrorResponse) => {
-        console.log(error.error)
         return throwError(() => error);
       }),
       finalize(() => this.form.enable())
-    ).subscribe();
+    ).subscribe(() => {
+      this.ref.close();
+      this.router.navigate(['']);
+    });
   }
 }

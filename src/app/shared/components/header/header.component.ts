@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MenuItem} from "primeng/api";
 import {Router} from "@angular/router";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,9 @@ export class HeaderComponent implements OnInit {
 
   public items: MenuItem[];
 
-  constructor() {
+  constructor(
+    private readonly authService: AuthService
+  ) {
     this.items = [];
   }
 
@@ -19,5 +22,6 @@ export class HeaderComponent implements OnInit {
   }
 
   public logout(): void {
+    this.authService.logout(true);
   }
 }

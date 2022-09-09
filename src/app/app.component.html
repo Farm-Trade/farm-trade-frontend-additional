@@ -1,5 +1,7 @@
-<app-header *ngIf="false"></app-header>
-<div [ngClass]="{container: true, 'non-signed': true, signed: false}">
+<ng-template #tmpl [ngTemplateOutlet]="tmpl" let-user [ngTemplateOutletContext]="{ $implicit: user$ | async }">
+<app-header *ngIf="user"></app-header>
+<div [ngClass]="{container: true, 'non-signed': !user, signed: user}">
   <router-outlet></router-outlet>
 </div>
-<app-footer *ngIf="false"></app-footer>
+<app-footer *ngIf="user"></app-footer>
+</ng-template>
