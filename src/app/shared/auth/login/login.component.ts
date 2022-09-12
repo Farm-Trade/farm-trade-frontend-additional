@@ -60,7 +60,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     ref.onClose.subscribe(response => {
       if (response === AuthAction.AFTER_SUCCESS_REGISTRATION) {
-        const alert: DynamicAlert = new DynamicAlert('Профіль успішно створений підтвердження надіслано на телефон', 'success')
+        const alert: DynamicAlert = new DynamicAlert(
+          'Профіль успішно створений та активований, тепер ви можете ввійти в систему',
+          'success'
+        );
         this.dynamicAlertService.pushAlert(alert, this.pageKey, 10_000);
       }
     })

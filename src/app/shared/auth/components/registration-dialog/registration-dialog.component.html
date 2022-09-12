@@ -1,4 +1,4 @@
-<div class="dynamic-form registration-dialog-box" [formGroup]="form">
+<div *ngIf="!isUserActivationShown" class="dynamic-form registration-dialog-box" [formGroup]="form">
   <h2>Створіть свій профіль</h2>
   <app-dynamic-alert [key]="pageKey"></app-dynamic-alert>
   <p-inputMask
@@ -31,5 +31,22 @@
     label="Зареєструватись"
     class="p-button-rounded regular-button"
     (click)="registration()"
+  ></button>
+</div>
+<div *ngIf="isUserActivationShown" class="dynamic-form">
+  <h2>Введіть код активації</h2>
+  <app-dynamic-alert [key]="pageKey"></app-dynamic-alert>
+  <p-inputMask
+    mask="999-999"
+    placeholder="Код Активації"
+    [formControl]="activationControl"
+  ></p-inputMask>
+  <button
+    pButton
+    pRipple
+    type="button"
+    label="Активувати Користувача"
+    class="p-button-rounded regular-button"
+    (click)="activate()"
   ></button>
 </div>
