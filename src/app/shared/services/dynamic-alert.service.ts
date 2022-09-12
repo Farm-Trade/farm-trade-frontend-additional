@@ -14,10 +14,18 @@ export class DynamicAlertService {
     this.alerts$ = this._alerts$.asObservable();
   }
 
-  public pushAlert(alert: DynamicAlert, key: string): void {
+  public pushAlert(alert: DynamicAlert, key: string, removeIn: number = 0): void {
     const oldAlerts: {[key: string]: DynamicAlert} = this._alerts$.getValue();
     oldAlerts[key] = alert;
     this._alerts$.next(oldAlerts);
+
+    if (removeIn) {
+      setTimeout(() => {
+        if (oldAlerts[key]) {
+          this.clearAlertByKey(key);
+        }
+      }, removeIn);
+    }
   }
 
   public getAlertsByKey(key: string): Observable<DynamicAlert> {

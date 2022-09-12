@@ -51,7 +51,6 @@ export class AuthService {
 
   public init(): void {
     const token: TokenDto = this.token;
-    console.log(token);
     if (token.token) {
       const jwtParsed: JwtParsed = JwtParsed.fromObject(jwt_decode(token.token));
       if (!jwtParsed.isExpired()) {

@@ -9,6 +9,8 @@ import {Router} from "@angular/router";
 import {DynamicDialogRef} from "primeng/dynamicdialog";
 import {DynamicAlertService} from "../../../services/dynamic-alert.service";
 import {DynamicAlert} from "../../../entities/alert/dynamic-alert.model";
+import {AuthAction} from "../../enums/auth-action.enum";
+import {FormUtil} from "../../../../utils/form.util";
 
 @Component({
   selector: 'app-auth-dialog',
@@ -47,12 +49,12 @@ export class LoginDialogComponent implements OnInit {
   public login(): void {
     this.form.disable();
     const values = {...this.form.value};
-    values.phone = values.phone.replace('(', '').replace(')', '').replace(' ', '').replace('-', '').trim();
+    values.phone = FormUtil.parsePhoneFromPrimeNgInput(values.phone);
     const authenticationDto: AuthenticationDto = AuthenticationDto.fromObject(values);
     this.authService.login(authenticationDto).pipe(
       catchError((error: HttpErrorResponse) => {
         const alert: DynamicAlert = new DynamicAlert('Користуача з таким телефоном або паролем не існує')
-        this.dynamicAlertService.pushAlert(alert, 'app-auth-dialog');
+        this.dynamicAlertService.pushAlert(alert, this.pageKey);
         return throwError(() => error);
       }),
       finalize(() => this.form.enable())
@@ -63,6 +65,6 @@ export class LoginDialogComponent implements OnInit {
   }
 
   public onRegistration(): void {
-    this.ref.close('')
+    this.ref.close(AuthAction.REGISTRATION)
   }
 }

@@ -1,1 +1,35 @@
-<p>registration-dialog works!</p>
+<div class="dynamic-form registration-dialog-box" [formGroup]="form">
+  <h2>Створіть свій профіль</h2>
+  <app-dynamic-alert [key]="pageKey"></app-dynamic-alert>
+  <p-inputMask
+    mask="(999) 999-9999"
+    placeholder="Телефон"
+    [formControl]="form | getControl : registrationForm.PHONE"
+  ></p-inputMask>
+  <input
+    type="text"
+    placeholder="Повне Ім'я"
+    pInputText
+    [formControl]="form | getControl : registrationForm.FULL_NAME"
+  >
+  <input
+    type="email"
+    placeholder="Ел. Пошта"
+    pInputText
+    [formControl]="form | getControl : registrationForm.EMAIL"
+  >
+  <input
+    type="password"
+    placeholder="Пароль"
+    pInputText
+    [formControl]="form | getControl : registrationForm.PASSWORD"
+  >
+  <button
+    pButton
+    pRipple
+    type="button"
+    label="Зареєструватись"
+    class="p-button-rounded regular-button"
+    (click)="registration()"
+  ></button>
+</div>

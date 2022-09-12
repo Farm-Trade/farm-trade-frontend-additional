@@ -119,3 +119,14 @@ button.regular-button {
   height: 100%;
   justify-content: center;
 }
+
+.dynamic-form h2 {
+  font-size: 19px;
+  margin-bottom: 5px;
+}
+.dynamic-form input {
+  margin-top: .7em;
+}
+.dynamic-form button {
+  margin-top: .7em;
+}

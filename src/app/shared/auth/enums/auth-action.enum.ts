@@ -1,0 +1,4 @@
+export enum AuthAction {
+  REGISTRATION,
+  AFTER_SUCCESS_REGISTRATION
+}

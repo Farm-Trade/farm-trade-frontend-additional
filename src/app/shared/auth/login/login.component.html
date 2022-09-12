@@ -1,8 +1,16 @@
 <div class="login">
   <div class="login-box">
+    <app-dynamic-alert [key]="pageKey"></app-dynamic-alert>
     <h1>Тут і зараз</h1>
     <h3>Купляй або продавай фрукти.</h3>
-    <button pButton pRipple type="button" label="Зареєструватись" class="p-button-rounded regular-button"></button>
+    <button
+      pButton
+      pRipple
+      type="button"
+      label="Зареєструватись"
+      class="p-button-rounded regular-button"
+      (click)="openRegistration()"
+    ></button>
     <p>У вас уже є профіль?</p>
     <button
       pButton

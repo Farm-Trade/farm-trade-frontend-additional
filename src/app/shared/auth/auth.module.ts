@@ -6,6 +6,7 @@ import {DialogService} from "primeng/dynamicdialog";
 import {CommonModule} from "@angular/common";
 import {SharedCustomModule} from "../shared-custom.module";
 import {RegistrationDialogComponent} from './components/registration-dialog/registration-dialog.component';
+import {UserService} from "../../services/user/user.service";
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import {RegistrationDialogComponent} from './components/registration-dialog/regi
     RegistrationDialogComponent
   ],
   imports: [SharedCustomModule, CommonModule],
-  providers: [DialogService, FormBuilder]
+  providers: [DialogService, FormBuilder, UserService]
 })
 export class AuthModule {
 }
