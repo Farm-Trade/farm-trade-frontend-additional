@@ -111,3 +111,11 @@ button.regular-button {
   width: 200px;
   padding: 5px;
 }
+
+.dynamic-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+}

@@ -59,8 +59,7 @@ export class AuthService {
         return;
       }
     }
-    this._user$.next(null);
-    this.router.navigate(['login']);
+    this.logout(true)
   }
 
   private static fromToken(token: string): JwtUser {

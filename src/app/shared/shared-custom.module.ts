@@ -9,13 +9,15 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AuthModule} from "./auth/auth.module";
 import {GetControlPipe} from './pipes/get-control.pipe';
 import {ReactiveFormsModule} from "@angular/forms";
+import { DynamicAlertComponent } from './components/dynamic-alert/dynamic-alert.component';
 
 
 @NgModule({
   declarations: [
     FooterComponent,
     HeaderComponent,
-    GetControlPipe
+    GetControlPipe,
+    DynamicAlertComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +35,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     HttpClientModule,
     BrowserAnimationsModule,
     GetControlPipe,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DynamicAlertComponent
   ]
 })
 export class SharedCustomModule {

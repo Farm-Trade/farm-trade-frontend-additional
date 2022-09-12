@@ -7,6 +7,7 @@ import {DynamicDialogModule} from "primeng/dynamicdialog";
 import {SharedModule} from "primeng/api";
 import {RippleModule} from "primeng/ripple";
 import {InputMaskModule} from "primeng/inputmask";
+import {MessageModule} from "primeng/message";
 
 
 
@@ -17,7 +18,8 @@ import {InputMaskModule} from "primeng/inputmask";
     ButtonModule,
     DynamicDialogModule,
     SharedModule,
-    InputMaskModule
+    InputMaskModule,
+    MessageModule
   ],
   exports: [
     MenubarModule,
@@ -26,7 +28,8 @@ import {InputMaskModule} from "primeng/inputmask";
     DynamicDialogModule,
     SharedModule,
     RippleModule,
-    InputMaskModule
+    InputMaskModule,
+    MessageModule
   ]
 })
 export class PrimeNgModule { }

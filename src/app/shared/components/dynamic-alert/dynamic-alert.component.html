@@ -1,0 +1,3 @@
+<div *ngIf="(alert$ | async) as alert" class="message">
+  <p-message [severity]="alert.status" [text]="alert.message"></p-message>
+</div>

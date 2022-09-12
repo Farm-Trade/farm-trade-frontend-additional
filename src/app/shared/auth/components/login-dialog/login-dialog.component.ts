@@ -7,6 +7,8 @@ import {catchError, finalize, throwError} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {DynamicDialogRef} from "primeng/dynamicdialog";
+import {DynamicAlertService} from "../../../services/dynamic-alert.service";
+import {DynamicAlert} from "../../../entities/alert/dynamic-alert.model";
 
 @Component({
   selector: 'app-auth-dialog',
@@ -18,20 +20,25 @@ export class LoginDialogComponent implements OnInit {
 
   public form: FormGroup;
   public nextButtonPressed: boolean;
+  public pageKey: string;
   public loginForm;
 
   constructor(
     private readonly ref: DynamicDialogRef,
     private readonly fb: FormBuilder,
     private readonly authService: AuthService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly dynamicAlertService: DynamicAlertService
   ) {
     this.nextButtonPressed = false;
+    this.pageKey = 'app-auth-dialog';
     this.loginForm = LoginFrom;
     this.form = this.fb.group({
       [this.loginForm.PHONE]: [null, [Validators.required, Validators.minLength(14), Validators.maxLength(15)]],
       [this.loginForm.PASSWORD]: [null, [Validators.required, Validators.minLength(10)]]
     });
+
+    this.dynamicAlertService.clearAlertByKey(this.pageKey);
   }
 
   public ngOnInit(): void {
@@ -44,6 +51,8 @@ export class LoginDialogComponent implements OnInit {
     const authenticationDto: AuthenticationDto = AuthenticationDto.fromObject(values);
     this.authService.login(authenticationDto).pipe(
       catchError((error: HttpErrorResponse) => {
+        const alert: DynamicAlert = new DynamicAlert('Користуача з таким телефоном або паролем не існує')
+        this.dynamicAlertService.pushAlert(alert, 'app-auth-dialog');
         return throwError(() => error);
       }),
       finalize(() => this.form.enable())
@@ -51,5 +60,9 @@ export class LoginDialogComponent implements OnInit {
       this.ref.close();
       this.router.navigate(['']);
     });
+  }
+
+  public onRegistration(): void {
+    this.ref.close('')
   }
 }

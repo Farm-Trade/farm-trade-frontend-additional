@@ -1,5 +1,6 @@
-<div class="login-dialog-box" [formGroup]="form">
+<div class="dynamic-form login-dialog-box" [formGroup]="form">
   <h2>Увійдіть</h2>
+  <app-dynamic-alert [key]="pageKey"></app-dynamic-alert>
   <p-inputMask
     mask="(999) 999-9999"
     placeholder="Телефон"
@@ -33,5 +34,5 @@
     label="Забули Пароль?"
     class="p-button-outlined p-button-rounded p-button-secondary regular-button"
   ></button>
-  <p>Не маєте профілю? <a>Зареєструватись</a></p>
+  <p>Не маєте профілю? <a (click)="onRegistration()">Зареєструватись</a></p>
 </div>

@@ -1,19 +1,20 @@
-import { NgModule } from '@angular/core';
-import { LoginComponent } from './login/login.component';
-import {PrimeNgModule} from "../prime-ng.module";
+import {NgModule} from '@angular/core';
+import {LoginComponent} from './login/login.component';
 import {LoginDialogComponent} from "./components/login-dialog/login-dialog.component";
-import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder} from "@angular/forms";
 import {DialogService} from "primeng/dynamicdialog";
 import {CommonModule} from "@angular/common";
 import {SharedCustomModule} from "../shared-custom.module";
-import {AuthService} from "../services/auth.service";
+import {RegistrationDialogComponent} from './components/registration-dialog/registration-dialog.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
-    LoginDialogComponent
+    LoginDialogComponent,
+    RegistrationDialogComponent
   ],
   imports: [SharedCustomModule, CommonModule],
   providers: [DialogService, FormBuilder]
 })
-export class AuthModule { }
+export class AuthModule {
+}

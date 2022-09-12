@@ -29,8 +29,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.dialogService.open(
       LoginDialogComponent,
       {
-        width: '430px',
-        height: '400px'
+        width: '550px',
+        height: '450px'
       }
     );
   }
