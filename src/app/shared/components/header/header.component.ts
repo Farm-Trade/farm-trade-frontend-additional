@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MenuItem} from "primeng/api";
 import {AuthService} from "../../services/auth.service";
 import {JwtUser} from "../../entities/user/jwt-user.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -15,7 +16,8 @@ export class HeaderComponent implements OnInit {
   public user: JwtUser = JwtUser.fromObject({} as JwtUser);
 
   constructor(
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly router: Router
   ) {
     this.authService.user$.subscribe(user => {
       if (!user) {
@@ -30,7 +32,8 @@ export class HeaderComponent implements OnInit {
         },
         {
           label: 'Склад',
-          icon: 'pi pi-database'
+          icon: 'pi pi-database',
+          command: () => this.router.navigate(['storage', user.id])
         },
         {
           label: 'Вийти',
