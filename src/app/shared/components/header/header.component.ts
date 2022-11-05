@@ -29,7 +29,8 @@ export class HeaderComponent implements OnInit {
           icon: 'pi pi-user',
         },
         {
-
+          label: 'Склад',
+          icon: 'pi pi-database'
         },
         {
           label: 'Вийти',
