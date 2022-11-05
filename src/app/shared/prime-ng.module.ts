@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {MegaMenuModule} from 'primeng/megamenu';
 import {MenubarModule} from "primeng/menubar";
 import {InputTextModule} from "primeng/inputtext";
 import {ButtonModule} from "primeng/button";
@@ -8,6 +8,11 @@ import {SharedModule} from "primeng/api";
 import {RippleModule} from "primeng/ripple";
 import {InputMaskModule} from "primeng/inputmask";
 import {MessageModule} from "primeng/message";
+import {MenuModule} from "primeng/menu";
+import {SpeedDialModule} from "primeng/speeddial";
+import {AvatarModule} from "primeng/avatar";
+import {SplitButtonModule} from "primeng/splitbutton";
+import {SelectButtonModule} from "primeng/selectbutton";
 
 
 
@@ -19,7 +24,13 @@ import {MessageModule} from "primeng/message";
     DynamicDialogModule,
     SharedModule,
     InputMaskModule,
-    MessageModule
+    MessageModule,
+    MegaMenuModule,
+    MenuModule,
+    SpeedDialModule,
+    AvatarModule,
+    SplitButtonModule,
+    SelectButtonModule
   ],
   exports: [
     MenubarModule,
@@ -29,7 +40,13 @@ import {MessageModule} from "primeng/message";
     SharedModule,
     RippleModule,
     InputMaskModule,
-    MessageModule
+    MessageModule,
+    MegaMenuModule,
+    MenuModule,
+    SpeedDialModule,
+    AvatarModule,
+    SplitButtonModule,
+    SelectButtonModule
   ]
 })
 export class PrimeNgModule { }

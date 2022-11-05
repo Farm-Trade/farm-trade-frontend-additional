@@ -24,6 +24,13 @@
     pInputText
     [formControl]="form | getControl : registrationForm.PASSWORD"
   >
+  <p-selectButton
+    [options]="roleOptions"
+    [formControl]="form | getControl : registrationForm.ROLE"
+    styleClass="form-select-button"
+    optionLabel="name"
+    optionValue="value"
+  ></p-selectButton>
   <button
     pButton
     pRipple

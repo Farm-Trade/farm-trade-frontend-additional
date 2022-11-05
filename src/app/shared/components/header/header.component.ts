@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MenuItem} from "primeng/api";
 import {AuthService} from "../../services/auth.service";
+import {JwtUser} from "../../entities/user/jwt-user.model";
 
 @Component({
   selector: 'app-header',
@@ -9,12 +10,34 @@ import {AuthService} from "../../services/auth.service";
 })
 export class HeaderComponent implements OnInit {
 
-  public items: MenuItem[];
+  public userMenuItems: MenuItem[] = [];
+  public menuItems: MenuItem[] = [];
+  public user: JwtUser = JwtUser.fromObject({} as JwtUser);
 
   constructor(
     private readonly authService: AuthService
   ) {
-    this.items = [];
+    this.authService.user$.subscribe(user => {
+      if (!user) {
+        return;
+      }
+
+      this.user = user;
+      this.userMenuItems = [
+        {
+          label: 'Профіль',
+          icon: 'pi pi-user',
+        },
+        {
+
+        },
+        {
+          label: 'Вийти',
+          icon: 'pi pi-sign-out',
+          command: this.logout.bind(this)
+        }
+      ];
+    });
   }
 
   public ngOnInit(): void {

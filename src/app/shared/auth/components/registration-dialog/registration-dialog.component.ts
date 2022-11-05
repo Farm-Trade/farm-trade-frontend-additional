@@ -21,9 +21,10 @@ import {AuthAction} from "../../enums/auth-action.enum";
 export class RegistrationDialogComponent implements OnInit {
   public form: FormGroup;
   public pageKey: string;
-  public registrationForm;
+  public registrationForm = RegistrationForm;
   public isUserActivationShown: boolean;
   public activationControl: FormControl;
+  public roleOptions: { name: string, value: UserRole }[];
 
   constructor(
     private readonly ref: DynamicDialogRef,
@@ -33,9 +34,11 @@ export class RegistrationDialogComponent implements OnInit {
     private readonly dynamicAlertService: DynamicAlertService
   ) {
     this.pageKey = 'app-registration-dialog';
-    this.registrationForm = RegistrationForm;
     this.isUserActivationShown = false;
-
+    this.roleOptions = [
+      { name: 'Фермер', value: UserRole.FARMER },
+      { name: 'Покупець', value: UserRole.RESELLER }
+    ];
     this.form = this.fb.group({
       [this.registrationForm.PHONE]: [null, [
         Validators.required,
@@ -44,7 +47,8 @@ export class RegistrationDialogComponent implements OnInit {
       ]],
       [this.registrationForm.FULL_NAME]: [null, [Validators.required]],
       [this.registrationForm.EMAIL]: [null, [Validators.required, Validators.email]],
-      [this.registrationForm.PASSWORD]: [null, [Validators.required, Validators.minLength(10)]]
+      [this.registrationForm.PASSWORD]: [null, [Validators.required, Validators.minLength(10)]],
+      [this.registrationForm.ROLE]: [UserRole.FARMER, [Validators.required]]
     });
 
     this.activationControl = this.fb.control(null, [
@@ -63,7 +67,6 @@ export class RegistrationDialogComponent implements OnInit {
     this.form.disable();
     const values = {...this.form.value};
     values.phone = `+38${FormUtil.parsePhoneFromPrimeNgInput(values.phone)}`;
-    values.role = UserRole.FARMER;
     const userCreateDto: UserCreateDto = UserCreateDto.fromObject(values);
 
     this.userService.registration(userCreateDto).pipe(

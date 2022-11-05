@@ -26,8 +26,8 @@ export class JwtUser {
   public static fromJwtParsed(jwtParsed: JwtParsed): JwtUser {
     const notDefined: any = null;
     return new JwtUser(
-      notDefined,
-      notDefined,
+      jwtParsed.id,
+      jwtParsed.fullName,
       jwtParsed.sub,
       notDefined,
       notDefined,

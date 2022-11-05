@@ -1,8 +1,12 @@
-<p-menubar [model]="items">
+<p-menubar >
   <ng-template pTemplate="start">
-<!--    <img src="assets/img/logo.jpg" height="40" class="mr-2">-->
+    <img src="assets/img/logo.png" height="40" class="mr-2">
   </ng-template>
   <ng-template pTemplate="end">
-    <button pButton label="Long Out" (click)="logout()"></button>
+    <p-splitButton
+      [label]="user.fullName"
+      [model]="userMenuItems"
+      styleClass="p-button-outlined p-button-info"
+    ></p-splitButton>
   </ng-template>
 </p-menubar>

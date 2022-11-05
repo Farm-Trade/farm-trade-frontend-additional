@@ -130,3 +130,11 @@ button.regular-button {
 .dynamic-form button {
   margin-top: .7em;
 }
+
+.dynamic-form .form-select-button {
+  padding: 10px;
+}
+
+.dynamic-form .form-select-button div {
+  padding: 0.75rem 1rem!important;
+}
