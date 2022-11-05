@@ -8,6 +8,7 @@ import {JwtUser} from "../../../shared/entities/user/jwt-user.model";
 import {FormUtil} from "../../../utils/form.util";
 import {Product} from "../model/product.model";
 import {Page} from "../../../shared/entities/api/page.model";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-storage',
@@ -19,6 +20,7 @@ export class StorageComponent implements OnInit {
   public user: JwtUser = JwtUser.fromObject({} as JwtUser);
   public page: Page<Product> | undefined;
   public loading: boolean = false;
+  public backendUrl: string;
   constructor(
     private readonly activateRoute: ActivatedRoute,
     private readonly productService: ProductService,
@@ -26,6 +28,7 @@ export class StorageComponent implements OnInit {
     private readonly authService: AuthService,
     private readonly router: Router
   ) {
+    this.backendUrl = environment.backendUrl + '/api/';
     this.activateRoute.params.pipe(
       map(({ id }) => +id),
       switchMap(id => {

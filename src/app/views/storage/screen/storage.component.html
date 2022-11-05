@@ -26,7 +26,7 @@
     <ng-template let-product pTemplate="listItem">
       <div class="col-12">
         <div class="product-list-item">
-          <img [src]="product.img" [alt]="product.productName.name"/>
+          <img [src]="backendUrl + product.img" [alt]="product.productName.name"/>
           <div class="product-list-detail">
             <div class="product-name">{{product.productName.name}}</div>
             <div class="product-description">Зарезервовано {{product.reservedQuantity}}кг з {{product.quantity}}кг</div>
