@@ -1,0 +1,38 @@
+.product-list-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  img {
+    width: 200px;
+    height: 150px;
+    box-shadow: 0 3px 6px #00000029, 0 3px 6px #0000003b;
+    margin: 0.5rem;
+  }
+
+  .product-list-detail {
+    flex: 1 1 0;
+    .product-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .product-description {
+      margin: 0 0 1rem;
+    }
+    .product-category-icon {
+      vertical-align: middle;
+      margin-right: 0.5rem;
+    }
+    .product-category {
+      font-weight: 600;
+      vertical-align: middle;
+    }
+  }
+  .product-list-action {
+    display: flex;
+    flex-direction: column;
+    button {
+      margin: 10px;
+    }
+  }
+}

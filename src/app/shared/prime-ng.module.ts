@@ -13,6 +13,7 @@ import {SpeedDialModule} from "primeng/speeddial";
 import {AvatarModule} from "primeng/avatar";
 import {SplitButtonModule} from "primeng/splitbutton";
 import {SelectButtonModule} from "primeng/selectbutton";
+import {DataViewModule} from "primeng/dataview";
 
 
 
@@ -30,7 +31,8 @@ import {SelectButtonModule} from "primeng/selectbutton";
     SpeedDialModule,
     AvatarModule,
     SplitButtonModule,
-    SelectButtonModule
+    SelectButtonModule,
+    DataViewModule
   ],
   exports: [
     MenubarModule,
@@ -46,7 +48,8 @@ import {SelectButtonModule} from "primeng/selectbutton";
     SpeedDialModule,
     AvatarModule,
     SplitButtonModule,
-    SelectButtonModule
+    SelectButtonModule,
+    DataViewModule
   ]
 })
 export class PrimeNgModule { }

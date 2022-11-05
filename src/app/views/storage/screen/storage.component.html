@@ -1,1 +1,57 @@
-<p>storage works!</p>
+<div class="card">
+  <p-dataView
+    #dv
+    [value]="page ? page.content : []"
+    [loading]="loading"
+    [rows]="page ? page.size : 0"
+    [totalRecords]="page ? page.totalElements : 0"
+    [paginator]="true"
+    [lazy]="true"
+    (onLazyLoad)="loadProducts($event)"
+    layout="list"
+    [styleClass]="page && page.totalElements !== 0 ? 'full-screen-data-view' : 'full-screen-data-view-no-data'"
+  >
+    <ng-template pTemplate="header">
+      <div class="flex flex-column md:flex-row md:justify-content-between">
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-plus"
+          class="p-button-raised p-button-success"
+          (click)="addProduct()"
+        ></button>
+      </div>
+    </ng-template>
+    <ng-template let-product pTemplate="listItem">
+      <div class="col-12">
+        <div class="product-list-item">
+          <img [src]="product.img" [alt]="product.productName.name"/>
+          <div class="product-list-detail">
+            <div class="product-name">{{product.productName.name}}</div>
+            <div class="product-description">Зарезервовано {{product.reservedQuantity}}кг з {{product.quantity}}кг</div>
+            <i class="pi pi-tag product-category-icon"></i><span class="product-category">{{product.productName.type}}</span>
+          </div>
+          <div class="product-list-action">
+            <button
+              pButton
+              pRipple
+              type="button"
+              label="Змінити"
+              icon="pi pi-pencil"
+              class="p-button-raised p-button-info"
+            ></button>
+            <button
+              pButton
+              pRipple
+              type="button"
+              label="Видалити"
+              icon="pi pi-trash"
+              class="p-button-raised p-button-danger"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-dataView>
+</div>

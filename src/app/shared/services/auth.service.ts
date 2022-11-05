@@ -61,6 +61,11 @@ export class AuthService {
     this.logout(true)
   }
 
+  public isOwnUserId(id: number): boolean {
+    const user: JwtUser | null = this._user$.getValue();
+    return !!user && user.id === id;
+  }
+
   private static fromToken(token: string): JwtUser {
     const jwtParsed: JwtParsed = JwtParsed.fromObject(jwt_decode(token));
     return  JwtUser.fromJwtParsed(jwtParsed);

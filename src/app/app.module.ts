@@ -8,6 +8,8 @@ import {SharedCustomModule} from "./shared/shared-custom.module";
 import {AuthModule} from "./shared/auth/auth.module";
 import {AuthService} from "./shared/services/auth.service";
 import {InitializerUtil} from "./utils/initializer.util";
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {TokenInterceptor} from "./shared/interceptors/token.interceptor";
 
 @NgModule({
   declarations: [
@@ -26,7 +28,12 @@ import {InitializerUtil} from "./utils/initializer.util";
       useFactory: InitializerUtil.setUpAuthData,
       deps: [AuthService],
       multi: true
-    }
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })
