@@ -62,7 +62,7 @@ export class RegistrationDialogComponent implements OnInit {
     this.dynamicAlertService.clearAlertByKey(this.pageKey);
     this.form.disable();
     const values = {...this.form.value};
-    values.phone = FormUtil.parsePhoneFromPrimeNgInput(values.phone);
+    values.phone = `+38${FormUtil.parsePhoneFromPrimeNgInput(values.phone)}`;
     values.role = UserRole.FARMER;
     const userCreateDto: UserCreateDto = UserCreateDto.fromObject(values);
 
@@ -79,7 +79,7 @@ export class RegistrationDialogComponent implements OnInit {
   public activate(): void {
     this.dynamicAlertService.clearAlertByKey(this.pageKey);
     this.activationControl.disable();
-    const activationCodeDto: ActivationCodeDto = new ActivationCodeDto(this.activationControl.value);
+    const activationCodeDto: ActivationCodeDto = new ActivationCodeDto(this.activationControl.value.replace("-", ""));
 
     this.userService.activate(activationCodeDto).pipe(
       catchError((error: HttpErrorResponse) => {

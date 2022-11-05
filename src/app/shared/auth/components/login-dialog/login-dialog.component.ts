@@ -49,7 +49,7 @@ export class LoginDialogComponent implements OnInit {
   public login(): void {
     this.form.disable();
     const values = {...this.form.value};
-    values.phone = FormUtil.parsePhoneFromPrimeNgInput(values.phone);
+    values.phone = `+38${FormUtil.parsePhoneFromPrimeNgInput(values.phone)}`;
     const authenticationDto: AuthenticationDto = AuthenticationDto.fromObject(values);
     this.authService.login(authenticationDto).pipe(
       catchError((error: HttpErrorResponse) => {
