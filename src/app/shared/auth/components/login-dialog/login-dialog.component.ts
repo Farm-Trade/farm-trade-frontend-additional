@@ -53,8 +53,10 @@ export class LoginDialogComponent implements OnInit {
     const authenticationDto: AuthenticationDto = AuthenticationDto.fromObject(values);
     this.authService.login(authenticationDto).pipe(
       catchError((error: HttpErrorResponse) => {
-        const alert: DynamicAlert = new DynamicAlert('Користуача з таким телефоном або паролем не існує')
-        this.dynamicAlertService.pushAlert(alert, this.pageKey);
+        this.dynamicAlertService.pushSimpleAlert(
+          'Користуача з таким телефоном або паролем не існує',
+          this.pageKey
+        );
         return throwError(() => error);
       }),
       finalize(() => this.form.enable())
@@ -65,6 +67,10 @@ export class LoginDialogComponent implements OnInit {
   }
 
   public onRegistration(): void {
-    this.ref.close(AuthAction.REGISTRATION)
+    this.ref.close(AuthAction.REGISTRATION);
+  }
+
+  public forgotPassword(): void {
+    this.ref.close(AuthAction.RESET_PASSWORD);
   }
 }

@@ -6,6 +6,8 @@ import {TokenDto} from "../../shared/entities/auth/token-dto.model";
 import {UserCreateDto} from "../../shared/entities/user/user-create-dto.model";
 import {User} from "../../shared/entities/user/user.model";
 import {ActivationCodeDto} from "../../shared/entities/auth/activation-code-dto.model";
+import {ForgotPasswordDto} from "../../shared/entities/auth/forgot-password-dto.model";
+import {ResetPasswordDto} from "../../shared/entities/auth/reset-password-dto.model";
 
 @Injectable()
 export class UserService {
@@ -21,5 +23,17 @@ export class UserService {
 
   public activate(activationCodeDto: ActivationCodeDto): Observable<void> {
     return this.httpClient.put<void>(`${this.url}/activate`, activationCodeDto);
+  }
+
+  public forgotPassword(forgotPasswordDto: ForgotPasswordDto): Observable<void> {
+    return this.httpClient.put<void>(`api/auth/forgot-password`, forgotPasswordDto);
+  }
+
+  public checkActivationCode(activationCode: string): Observable<User> {
+    return this.httpClient.get<User>(`${this.url}/from-code/${activationCode}`);
+  }
+
+  public resetPassword(id: number, resetPasswordDto: ResetPasswordDto): Observable<void> {
+    return this.httpClient.put<void>(`api/auth/reset-password/${id}`, resetPasswordDto);
   }
 }

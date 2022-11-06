@@ -7,12 +7,14 @@ import {CommonModule} from "@angular/common";
 import {SharedCustomModule} from "../shared-custom.module";
 import {RegistrationDialogComponent} from './components/registration-dialog/registration-dialog.component';
 import {UserService} from "../../services/user/user.service";
+import { ForgotPasswordDialogComponent } from './components/forgot-password-dialog/forgot-password-dialog.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     LoginDialogComponent,
-    RegistrationDialogComponent
+    RegistrationDialogComponent,
+    ForgotPasswordDialogComponent
   ],
   imports: [SharedCustomModule, CommonModule],
   providers: [DialogService, FormBuilder, UserService]

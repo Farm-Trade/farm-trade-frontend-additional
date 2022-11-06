@@ -71,8 +71,10 @@ export class RegistrationDialogComponent implements OnInit {
 
     this.userService.registration(userCreateDto).pipe(
       catchError((error: HttpErrorResponse) => {
-        const alert: DynamicAlert = new DynamicAlert('Підчас створення профілю відбулась помилка')
-        this.dynamicAlertService.pushAlert(alert, this.pageKey);
+        this.dynamicAlertService.pushSimpleAlert(
+          'Підчас створення профілю відбулась помилка',
+          this.pageKey
+        );
         return throwError(() => error);
       }),
       finalize(() => this.form.enable())
@@ -86,8 +88,10 @@ export class RegistrationDialogComponent implements OnInit {
 
     this.userService.activate(activationCodeDto).pipe(
       catchError((error: HttpErrorResponse) => {
-        const alert: DynamicAlert = new DynamicAlert('Підчас активації профілю відбулась помилка')
-        this.dynamicAlertService.pushAlert(alert, this.pageKey);
+        this.dynamicAlertService.pushSimpleAlert(
+          'Підчас активації профілю відбулась помилка',
+          this.pageKey
+        );
         return throwError(() => error);
       }),
       finalize(() => this.activationControl.enable())

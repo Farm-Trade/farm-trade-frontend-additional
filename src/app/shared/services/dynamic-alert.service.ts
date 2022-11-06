@@ -28,6 +28,11 @@ export class DynamicAlertService {
     }
   }
 
+  public pushSimpleAlert(message: string, key: string, removeIn: number = 0, ): void {
+    const alert: DynamicAlert = new DynamicAlert(message);
+    this.pushAlert(alert, key, removeIn);
+  }
+
   public getAlertsByKey(key: string): Observable<DynamicAlert> {
     return this.alerts$.pipe(map(alerts => alerts[key]));
   }

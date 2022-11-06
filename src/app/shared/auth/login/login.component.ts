@@ -6,6 +6,7 @@ import {AuthAction} from "../enums/auth-action.enum";
 import {RegistrationDialogComponent} from "../components/registration-dialog/registration-dialog.component";
 import {DynamicAlertService} from "../../services/dynamic-alert.service";
 import {DynamicAlert} from "../../entities/alert/dynamic-alert.model";
+import {ForgotPasswordDialogComponent} from "../components/forgot-password-dialog/forgot-password-dialog.component";
 
 @Component({
   selector: 'app-auth',
@@ -45,6 +46,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     ref.onClose.subscribe(response => {
       if (response === AuthAction.REGISTRATION) {
         this.openRegistration();
+      } else if (response === AuthAction.RESET_PASSWORD) {
+        this.openForgotPassword()
       }
     })
   }
@@ -62,6 +65,26 @@ export class LoginComponent implements OnInit, OnDestroy {
       if (response === AuthAction.AFTER_SUCCESS_REGISTRATION) {
         const alert: DynamicAlert = new DynamicAlert(
           'Профіль успішно створений та активований, тепер ви можете ввійти в систему',
+          'success'
+        );
+        this.dynamicAlertService.pushAlert(alert, this.pageKey, 10_000);
+      }
+    })
+  }
+
+  private openForgotPassword(): void {
+    const ref = this.dialogService.open(
+      ForgotPasswordDialogComponent,
+      {
+        width: '550px',
+        height: '250px'
+      }
+    );
+
+    ref.onClose.subscribe(response => {
+      if (response === AuthAction.AFTER_SUCCESS_RESET_PASSWORD) {
+        const alert: DynamicAlert = new DynamicAlert(
+          'Пароль успішно змінений, тепер ви можете ввійти в систему з новим паролем',
           'success'
         );
         this.dynamicAlertService.pushAlert(alert, this.pageKey, 10_000);
