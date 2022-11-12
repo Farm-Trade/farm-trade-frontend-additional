@@ -1,3 +1,6 @@
+<div *ngIf="isLoading$ | async" class="p-dialog-mask p-component-overlay" style="z-index: 120000">
+  <p-progressSpinner styleClass="custom-spinner" strokeWidth="5" fill="var(--surface-ground)" animationDuration="1s"></p-progressSpinner>
+</div>
 <ng-template #tmpl [ngTemplateOutlet]="tmpl" let-user [ngTemplateOutletContext]="{ $implicit: user$ | async }">
 <app-header *ngIf="user"></app-header>
 <div [ngClass]="{container: true, 'non-signed': !user, signed: user}">

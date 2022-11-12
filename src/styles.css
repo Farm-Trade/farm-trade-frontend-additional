@@ -1,3 +1,7 @@
+:root {
+  --spinner-size: 130px;
+}
+
 /*
 html5doctor.com Reset Stylesheet
 v1.6.1
@@ -124,10 +128,16 @@ button.regular-button {
   font-size: 19px;
   margin-bottom: 5px;
 }
-.dynamic-form input {
+.dynamic-form input, .p-inputgroup {
   margin-top: .7em;
 }
 .dynamic-form button {
+  margin-top: .7em;
+}
+.dynamic-form.internal .p-inputgroup {
+  width: 80%!important;
+}
+.dynamic-form p-dropdown {
   margin-top: .7em;
 }
 
@@ -138,9 +148,34 @@ button.regular-button {
 .dynamic-form .form-select-button div {
   padding: 0.75rem 1rem!important;
 }
+.dynamic-form p-fileupload {
+  width: 80%;
+  margin-top: .7em;
+}
+.dynamic-form p-fileupload .p-fileupload-choose {
+  width: 100%;
+}
+.dynamic-form .button-block {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  align-content: center;
+  align-items: flex-end;
+  width: 80%;
+  margin-top: 1rem;
+}
 .full-screen-data-view .p-dataview-content {
   min-height: calc(100vh - 55vh);
 }
 .full-screen-data-view-no-data .p-dataview-emptymessage {
   min-height: calc(100vh - 55vh);
+}
+
+.custom-spinner {
+  height: var(--spinner-size)!important;
+  width: var(--spinner-size)!important;;
+  position: absolute!important;
+  z-index: 1;
+  top: calc(50% - var(--spinner-size) / 2);
+  left: calc(50% - var(--spinner-size) / 2);
 }

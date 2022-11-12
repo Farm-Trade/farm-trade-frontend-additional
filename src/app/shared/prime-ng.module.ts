@@ -14,6 +14,10 @@ import {AvatarModule} from "primeng/avatar";
 import {SplitButtonModule} from "primeng/splitbutton";
 import {SelectButtonModule} from "primeng/selectbutton";
 import {DataViewModule} from "primeng/dataview";
+import {DropdownModule} from "primeng/dropdown";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {InputNumberModule} from "primeng/inputnumber";
+import {FileUploadModule} from "primeng/fileupload";
 
 
 
@@ -32,7 +36,11 @@ import {DataViewModule} from "primeng/dataview";
     AvatarModule,
     SplitButtonModule,
     SelectButtonModule,
-    DataViewModule
+    DataViewModule,
+    DropdownModule,
+    ProgressSpinnerModule,
+    InputNumberModule,
+    FileUploadModule
   ],
   exports: [
     MenubarModule,
@@ -49,7 +57,11 @@ import {DataViewModule} from "primeng/dataview";
     AvatarModule,
     SplitButtonModule,
     SelectButtonModule,
-    DataViewModule
+    DataViewModule,
+    DropdownModule,
+    ProgressSpinnerModule,
+    InputNumberModule,
+    FileUploadModule
   ]
 })
 export class PrimeNgModule { }

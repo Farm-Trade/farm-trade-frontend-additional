@@ -1,0 +1,38 @@
+<div class="dynamic-form internal" [formGroup]="form">
+  <h2>{{isUpdateWindow ? 'Змінити' : 'Створити'}} Продукт</h2>
+  <app-dynamic-alert [key]="pageKey"></app-dynamic-alert>
+  <p-dropdown
+    [options]="(productNames$ | async) || []"
+    [virtualScroll]="true"
+    [itemSize]="31"
+    [filter]="false"
+    appendTo="body"
+    formControlName="productName"
+    placeholder="Виберіть Сорт"
+  ></p-dropdown>
+  <div class="p-inputgroup">
+    <p-inputNumber formControlName="quantity" mode="decimal" placeholder="Кількість"></p-inputNumber>
+    <span class="p-inputgroup-addon">кг</span>
+  </div>
+  <div class="p-inputgroup">
+    <p-inputNumber [minFractionDigits]="2" [maxFractionDigits]="2" placeholder="Розмір" formControlName="size" mode="decimal"></p-inputNumber>
+    <span class="p-inputgroup-addon">см</span>
+  </div>
+  <p-fileUpload
+    #fileUpload
+    mode="basic"
+    name="img"
+    accept="image/*"
+    [chooseLabel]="uploadLabel"
+    [uploadLabel]="uploadLabel"
+    [chooseIcon]="isUpdateWindow ? 'pi pi-upload' : 'pi pi-plus'"
+    [maxFileSize]="200000000"
+    [customUpload]="true"
+    [multiple]="false"
+    (onSelect)="onImgUploaded($event)"
+  ></p-fileUpload>
+  <div class="button-block">
+    <button pButton pRipple type="button" label="Закрити" class="p-button-raised p-button-info" (click)="onClose()"></button>
+    <button pButton pRipple type="button" label="Зберегти" class="p-button-raised p-button-success" [disabled]="form.invalid" (click)="onSave()"></button>
+  </div>
+</div>

@@ -14,8 +14,8 @@ export class Product {
   }
 
   public static fromObject(product: Product): Product {
-    const productName: ProductName = ProductName.fromObject(product.productName);
-    const owner: User = User.fromObject(product.owner);
+    const productName: ProductName = ProductName.fromObject(product.productName || {} as ProductName);
+    const owner: User = User.fromObject(product.owner || {} as User);
     return new Product(
       product.id,
       product.quantity,

@@ -18,6 +18,7 @@
           pRipple
           type="button"
           icon="pi pi-plus"
+          label="Додати продукт"
           class="p-button-raised p-button-success"
           (click)="addProduct()"
         ></button>
@@ -40,6 +41,7 @@
               label="Змінити"
               icon="pi pi-pencil"
               class="p-button-raised p-button-info"
+              (click)="updateProduct(product)"
             ></button>
             <button
               pButton
@@ -48,6 +50,7 @@
               label="Видалити"
               icon="pi pi-trash"
               class="p-button-raised p-button-danger"
+              (click)="removeProduct(product.id)"
             ></button>
           </div>
         </div>
