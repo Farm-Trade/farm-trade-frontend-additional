@@ -23,8 +23,9 @@ export class StorageComponent implements OnInit, AfterViewInit {
 
   public user: JwtUser = JwtUser.fromObject({} as JwtUser);
   public page: Page<Product> | undefined;
+  public selectedProducts: Product[] = [];
+  public selectAll: boolean;
   public loading: boolean = false;
-  public backendUrl: string;
   private readonly pageKey: string;
 
   constructor(
@@ -39,7 +40,7 @@ export class StorageComponent implements OnInit, AfterViewInit {
     private readonly changeDetectorRef: ChangeDetectorRef
   ) {
     this.pageKey = 'app-storage';
-    this.backendUrl = environment.backendUrl + '/api/';
+    this.selectAll = false;
     this.dynamicAlertService.clearAlertByKey(this.pageKey);
     this.activateRoute.params.pipe(
       map(({id}) => +id),
@@ -85,6 +86,18 @@ export class StorageComponent implements OnInit, AfterViewInit {
     this.productService.delete(id).subscribe(observer);
   }
 
+  public onSelectionChange($event: any) {
+    console.log('onSelectionChange not implemented');
+  }
+
+  public onSelectAllChange($event: any) {
+    console.log('onSelectAllChange not implemented');
+  }
+
+  removeSelectedProduct(): void {
+    console.log('removeSelectedProduct not implemented');
+  }
+
   private getProducts(queryParams: { [key: string]: any } = {}): void {
     this.loading = true;
     const observer: Observer<Page<Product>> = {
@@ -100,7 +113,6 @@ export class StorageComponent implements OnInit, AfterViewInit {
       UpdateProductComponent,
       {
         width: '500px',
-        height: '450px',
         data: { product, isUpdateWindow }
       }
     );

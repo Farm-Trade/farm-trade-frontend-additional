@@ -134,9 +134,6 @@ button.regular-button {
 .dynamic-form button {
   margin-top: .7em;
 }
-.dynamic-form.internal .p-inputgroup {
-  width: 80%!important;
-}
 .dynamic-form p-dropdown {
   margin-top: .7em;
 }
@@ -161,8 +158,11 @@ button.regular-button {
   flex-direction: row;
   align-content: center;
   align-items: flex-end;
-  width: 80%;
+  width: 100%;
   margin-top: 1rem;
+}
+.dynamic-form .button-block button {
+  margin-left: 1rem;
 }
 .full-screen-data-view .p-dataview-content {
   min-height: calc(100vh - 55vh);
@@ -178,4 +178,26 @@ button.regular-button {
   z-index: 1;
   top: calc(50% - var(--spinner-size) / 2);
   left: calc(50% - var(--spinner-size) / 2);
+}
+
+table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.dynamic-form.internal input {
+  width: 100%;
+}
+.dynamic-form.internal .input {
+  width: 100%;
+}
+.dynamic-form.internal  p-dropdown {
+  width: 100%;
+}
+.dynamic-form.internal p-dropdown .p-dropdown {
+  width: 100%;
+}
+.dynamic-form.internal .image-preview {
+  max-height: 150px;
+  height: 100%;
 }

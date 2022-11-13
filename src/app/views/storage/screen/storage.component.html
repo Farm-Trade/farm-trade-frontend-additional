@@ -1,60 +1,70 @@
-<div class="card">
-  <p-dataView
-    #dv
-    [value]="page ? page.content : []"
-    [loading]="loading"
-    [rows]="page ? page.size : 0"
-    [totalRecords]="page ? page.totalElements : 0"
-    [paginator]="true"
-    [lazy]="true"
-    (onLazyLoad)="loadProducts($event)"
-    layout="list"
-    [styleClass]="page && page.totalElements !== 0 ? 'full-screen-data-view' : 'full-screen-data-view-no-data'"
-  >
-    <ng-template pTemplate="header">
-      <div class="flex flex-column md:flex-row md:justify-content-between">
-        <button
-          pButton
-          pRipple
-          type="button"
-          icon="pi pi-plus"
-          label="Додати продукт"
-          class="p-button-raised p-button-success"
-          (click)="addProduct()"
-        ></button>
-      </div>
-    </ng-template>
-    <ng-template let-product pTemplate="listItem">
-      <div class="col-12">
-        <div class="product-list-item">
-          <img [src]="backendUrl + product.img" [alt]="product.productName.name"/>
-          <div class="product-list-detail">
-            <div class="product-name">{{product.productName.name}}</div>
-            <div class="product-description">Зарезервовано {{product.reservedQuantity}}кг з {{product.quantity}}кг</div>
-            <i class="pi pi-tag product-category-icon"></i><span class="product-category">{{product.productName.type}}</span>
-          </div>
-          <div class="product-list-action">
-            <button
-              pButton
-              pRipple
-              type="button"
-              label="Змінити"
-              icon="pi pi-pencil"
-              class="p-button-raised p-button-info"
-              (click)="updateProduct(product)"
-            ></button>
-            <button
-              pButton
-              pRipple
-              type="button"
-              label="Видалити"
-              icon="pi pi-trash"
-              class="p-button-raised p-button-danger"
-              (click)="removeProduct(product.id)"
-            ></button>
-          </div>
-        </div>
-      </div>
-    </ng-template>
-  </p-dataView>
-</div>
+<p-toolbar [style]="{ marginBottom: '1rem'}">
+  <ng-template pTemplate="left">
+    <button pButton pRipple label="Додати" icon="pi pi-plus" class="p-button-raised p-button-text p-button-plain"  [style]="{ marginRight: '1rem'}" (click)="addProduct()"></button>
+<!--    <button pButton pRipple label="Видалити" icon="pi pi-trash" class="p-button-danger" (click)="removeSelectedProduct()" [disabled]="!selectedProducts || !selectedProducts.length"></button>-->
+  </ng-template>
+
+  <ng-template pTemplate="right">
+  </ng-template>
+</p-toolbar>
+
+<p-table
+  [value]="page?.content || []"
+  [lazy]="true"
+  [selection]="selectedProducts"
+  [selectAll]="selectAll"
+  [paginator]="true"
+  [rows]="page?.size || 10"
+  [totalRecords]="page?.totalElements || 0"
+  [loading]="loading"
+  [globalFilterFields]="['quantity','reservedQuantity', 'size', 'productName.name']"
+  (onLazyLoad)="loadProducts($event)"
+  (selectionChange)="onSelectionChange($event)"
+  (selectAllChange)="onSelectAllChange($event)"
+  responsiveLayout="scroll"
+  dataKey="id"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 3rem"></th>
+      <th pSortableColumn="productName.name">Назва <p-sortIcon field="productName.name"></p-sortIcon></th>
+      <th pSortableColumn="quantity">Кількість <p-sortIcon field="quantity"></p-sortIcon></th>
+      <th pSortableColumn="reservedQuantity">Зарезервована Кількість <p-sortIcon field="reservedQuantity"></p-sortIcon></th>
+      <th pSortableColumn="size">Розмір <p-sortIcon field="size" ></p-sortIcon></th>
+      <th></th>
+    </tr>
+    <tr>
+      <th style="width: 3rem">
+<!--        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>-->
+      </th>
+      <th>
+        <p-columnFilter type="text" field="productName.name" [showMenu]="false"></p-columnFilter>
+      </th>
+      <th>
+        <p-columnFilter type="text" field="quantity" [showMenu]="false"></p-columnFilter>
+      </th>
+      <th>
+        <p-columnFilter type="text" field="reservedQuantity" [showMenu]="false"></p-columnFilter>
+      </th>
+      <th>
+        <p-columnFilter type="text" field="size" [showMenu]="false"></p-columnFilter>
+      </th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-product>
+    <tr>
+      <td>
+<!--        <p-tableCheckbox [value]="customer"></p-tableCheckbox>-->
+      </td>
+      <td>{{product.productName.name}}</td>
+      <td>{{product.quantity}}</td>
+      <td>{{product.reservedQuantity}}</td>
+      <td>{{product.size}}</td>
+      <td>
+        <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-plain" (click)="updateProduct(product)"></button>
+        <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-text p-button-plain" (click)="removeProduct(product.id)"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

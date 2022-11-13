@@ -18,6 +18,10 @@ import {DropdownModule} from "primeng/dropdown";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {InputNumberModule} from "primeng/inputnumber";
 import {FileUploadModule} from "primeng/fileupload";
+import {TableModule} from "primeng/table";
+import {ToolbarModule} from "primeng/toolbar";
+import {GalleriaModule} from "primeng/galleria";
+import {ImageModule} from "primeng/image";
 
 
 
@@ -40,7 +44,11 @@ import {FileUploadModule} from "primeng/fileupload";
     DropdownModule,
     ProgressSpinnerModule,
     InputNumberModule,
-    FileUploadModule
+    FileUploadModule,
+    TableModule,
+    ToolbarModule,
+    GalleriaModule,
+    ImageModule
   ],
   exports: [
     MenubarModule,
@@ -61,7 +69,11 @@ import {FileUploadModule} from "primeng/fileupload";
     DropdownModule,
     ProgressSpinnerModule,
     InputNumberModule,
-    FileUploadModule
+    FileUploadModule,
+    TableModule,
+    ToolbarModule,
+    GalleriaModule,
+    ImageModule
   ]
 })
 export class PrimeNgModule { }

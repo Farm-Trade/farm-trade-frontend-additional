@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {LoginFrom} from "../../enums/login-from.enum";
 import {AuthenticationDto} from "../../../entities/auth/authentication-dto.model";
@@ -19,7 +19,8 @@ import {FormUtil} from "../../../../utils/form.util";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginDialogComponent implements OnInit {
-
+  @ViewChild('passwordInput')
+  passwordInput: ElementRef | undefined;
   public form: FormGroup;
   public nextButtonPressed: boolean;
   public pageKey: string;
@@ -72,5 +73,14 @@ export class LoginDialogComponent implements OnInit {
 
   public forgotPassword(): void {
     this.ref.close(AuthAction.RESET_PASSWORD);
+  }
+
+  public onNextPressed() {
+    this.nextButtonPressed = !this.nextButtonPressed;
+    setTimeout(() => {
+      if (this.passwordInput && this.passwordInput.nativeElement) {
+        this.passwordInput.nativeElement.focus();
+      }
+    }, 1)
   }
 }

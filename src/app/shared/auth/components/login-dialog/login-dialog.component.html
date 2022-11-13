@@ -6,7 +6,7 @@
     placeholder="Телефон"
     [formControl]="form | getControl : loginForm.PHONE"
   ></p-inputMask>
-  <input *ngIf="nextButtonPressed" type="password" pInputText [formControl]="form | getControl : loginForm.PASSWORD">
+  <input #passwordInput *ngIf="nextButtonPressed" type="password" pInputText [formControl]="form | getControl : loginForm.PASSWORD">
   <button
     *ngIf="!nextButtonPressed"
     pButton
@@ -14,7 +14,7 @@
     type="button"
     label="Далі"
     class="p-button-rounded regular-button"
-    (click)="nextButtonPressed = !nextButtonPressed"
+    (click)="onNextPressed()"
     [disabled]="(form | getControl : loginForm.PHONE).invalid"
   ></button>
   <button

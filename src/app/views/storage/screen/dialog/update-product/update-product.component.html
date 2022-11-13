@@ -15,24 +15,33 @@
     <span class="p-inputgroup-addon">кг</span>
   </div>
   <div class="p-inputgroup">
-    <p-inputNumber [minFractionDigits]="2" [maxFractionDigits]="2" placeholder="Розмір" formControlName="size" mode="decimal"></p-inputNumber>
+    <p-inputNumber [minFractionDigits]="2" [maxFractionDigits]="2" placeholder="Розмір" formControlName="size"
+                   mode="decimal"></p-inputNumber>
     <span class="p-inputgroup-addon">см</span>
   </div>
-  <p-fileUpload
-    #fileUpload
-    mode="basic"
-    name="img"
-    accept="image/*"
-    [chooseLabel]="uploadLabel"
-    [uploadLabel]="uploadLabel"
-    [chooseIcon]="isUpdateWindow ? 'pi pi-upload' : 'pi pi-plus'"
-    [maxFileSize]="200000000"
-    [customUpload]="true"
-    [multiple]="false"
-    (onSelect)="onImgUploaded($event)"
-  ></p-fileUpload>
+  <button
+    pButton
+    [label]="uploadLabel"
+    [icon]="isUpdateWindow ? 'pi pi-upload' : 'pi pi-plus'"
+    (click)="imageUpload.click()"
+    class="p-button-raised p-button-text p-button-plain input"
+  ></button>
+  <input #imageUpload type="file" accept="image/*" style="display: none" (change)="onImgUploaded($event)">
+
+  <p-image
+    *ngIf="imgSrc"
+    [src]="imgSrc"
+    [preview]="true"
+    [style]="{marginTop: '16px'}"
+    appendTo="body"
+    alt="Зображення"
+    imageClass="image-preview"
+  ></p-image>
+
   <div class="button-block">
-    <button pButton pRipple type="button" label="Закрити" class="p-button-raised p-button-info" (click)="onClose()"></button>
-    <button pButton pRipple type="button" label="Зберегти" class="p-button-raised p-button-success" [disabled]="form.invalid" (click)="onSave()"></button>
+    <button pButton pRipple type="button" label="Закрити" class="p-button-raised p-button-text p-button-plain"
+            (click)="onClose()"></button>
+    <button pButton pRipple type="button" label="Зберегти" class="p-button-raised p-button-text p-button-success"
+            [disabled]="form.invalid" (click)="onSave()"></button>
   </div>
 </div>

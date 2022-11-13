@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DynamicAlertService} from "../../../../../shared/services/dynamic-alert.service";
@@ -12,7 +12,8 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {UpdateProductDto} from "../../../model/update-product-dto.model";
 import {CreateProductDto} from "../../../model/create-product-dto.model";
 import {SpinnerService} from "../../../../../services/shared/spinner.service";
-import {FileUpload} from "primeng/fileupload";
+import {environment} from "../../../../../../environments/environment";
+import {Image} from "primeng/image/image";
 
 @Component({
   selector: 'app-update-product',
@@ -20,10 +21,8 @@ import {FileUpload} from "primeng/fileupload";
   styleUrls: ['./update-product.component.scss']
 })
 export class UpdateProductComponent implements OnInit {
-  @ViewChild('fileUpload')
-  public fileUploader: FileUpload | undefined;
   public productNames$: Observable<SelectItem[]>;
-  public img: File | undefined;
+  public imgSrc: string | ArrayBuffer | null;
   public uploadLabel: string;
   public readonly product: Product;
   public readonly form: FormGroup;
@@ -45,6 +44,7 @@ export class UpdateProductComponent implements OnInit {
     this.pageKey = 'app-update-product';
     this.dynamicAlertService.clearAlertByKey(this.pageKey);
     this.uploadLabel = this.isUpdateWindow ? this.product.img : 'Завантажте зображення';
+    this.imgSrc = this.isUpdateWindow && this.product.img ? `${environment.backendUrl}/api/${this.product.img}` : null;
     const queryParams: { [key: string]: any } = {type: ProductType.APPLE, size: 10_000};
     this.productNames$ = this.productServiceName.getProductNames(queryParams).pipe(
       catchError(() => of(null)),
@@ -77,13 +77,18 @@ export class UpdateProductComponent implements OnInit {
     this.ref.close();
   }
 
-  onImgUploaded({ currentFiles }: { currentFiles: File[] }): void {
-    const imgControl: AbstractControl = this.form.controls['img'];
-    imgControl.setValue(currentFiles[0])
-    this.uploadLabel = imgControl.value.name;
-    if (this.fileUploader) {
-      this.fileUploader.clear();
+  onImgUploaded(event: Event): void {
+    if (!(event.target && (event.target as any).files && (event.target as any).files.length)) {
+      return;
     }
+    const file: File = (event.target as any).files[0];
+    this.form.controls['img'].setValue(file)
+    this.uploadLabel = file.name;
+    const reader  = new FileReader();
+    reader.onloadend = () => {
+      this.imgSrc = reader.result;
+    };
+    reader.readAsDataURL(file);
   }
 
   private onSaveResponseHandler(response: Product | HttpErrorResponse): void {
