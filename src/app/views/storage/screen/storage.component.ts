@@ -63,9 +63,9 @@ export class StorageComponent implements OnInit, AfterViewInit {
     this.changeDetectorRef.detectChanges();
   }
 
-  public loadProducts({ first, rows }: { first: number, rows: number }): void {
-    console.log(first, rows)
-    this.getProducts({ page: first / (rows || 1) })
+  public loadProducts(config: { first: number, rows: number }): void {
+    const page: number = config.first / (config.rows || 1);
+    this.getProducts({ page, owner: this.user.id })
   }
 
   public addProduct(): void {
