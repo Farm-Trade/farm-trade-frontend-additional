@@ -14,17 +14,13 @@ import {ForgotPasswordDialogComponent} from "../components/forgot-password-dialo
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  public readonly pageKey: string;
   private readonly subscriptions: Subscription;
 
   constructor(
     private readonly dialogService: DialogService,
     private readonly dynamicAlertService: DynamicAlertService
   ) {
-    this.pageKey = 'app-auth';
     this.subscriptions = new Subscription();
-
-    this.dynamicAlertService.clearAlertByKey(this.pageKey);
   }
 
   public ngOnInit(): void {
@@ -63,11 +59,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     ref.onClose.subscribe(response => {
       if (response === AuthAction.AFTER_SUCCESS_REGISTRATION) {
-        const alert: DynamicAlert = new DynamicAlert(
-          'Профіль успішно створений та активований, тепер ви можете ввійти в систему',
-          'success'
+        this.dynamicAlertService.addSuccessMessage(
+          'Профіль успішно створений та активований, тепер ви можете ввійти в систему'
         );
-        this.dynamicAlertService.pushAlert(alert, this.pageKey, 10_000);
       }
     })
   }
@@ -83,11 +77,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     ref.onClose.subscribe(response => {
       if (response === AuthAction.AFTER_SUCCESS_RESET_PASSWORD) {
-        const alert: DynamicAlert = new DynamicAlert(
-          'Пароль успішно змінений, тепер ви можете ввійти в систему з новим паролем',
-          'success'
+        this.dynamicAlertService.addSuccessMessage(
+          'Пароль успішно змінений, тепер ви можете ввійти в систему з новим паролем'
         );
-        this.dynamicAlertService.pushAlert(alert, this.pageKey, 10_000);
       }
     })
   }

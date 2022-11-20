@@ -3,6 +3,7 @@ import {MenuItem} from "primeng/api";
 import {AuthService} from "../../services/auth.service";
 import {JwtUser} from "../../entities/user/jwt-user.model";
 import {Router} from "@angular/router";
+import {UserRole} from "../../entities/enums/user-role.enum";
 
 @Component({
   selector: 'app-header',
@@ -12,7 +13,6 @@ import {Router} from "@angular/router";
 export class HeaderComponent implements OnInit {
 
   public userMenuItems: MenuItem[] = [];
-  public menuItems: MenuItem[] = [];
   public user: JwtUser = JwtUser.fromObject({} as JwtUser);
 
   constructor(
@@ -25,16 +25,27 @@ export class HeaderComponent implements OnInit {
       }
 
       this.user = user;
+      const additionalItems: MenuItem[] = [];
+      if ([UserRole.FARMER, UserRole.ADMIN].includes(this.user.role[0])) {
+        additionalItems.push({
+            label: 'Склад',
+            icon: 'pi pi-database',
+            command: () => this.router.navigate(['storage', user.id])
+          });
+      }
+      if ([UserRole.RESELLER, UserRole.ADMIN].includes(this.user.role[0])) {
+        additionalItems.push({
+          label: 'Лоти',
+          icon: 'pi pi-code',
+          command: () => this.router.navigate(['lots', user.id])
+        });
+      }
       this.userMenuItems = [
         {
           label: 'Профіль',
           icon: 'pi pi-user',
         },
-        {
-          label: 'Склад',
-          icon: 'pi pi-database',
-          command: () => this.router.navigate(['storage', user.id])
-        },
+        ...additionalItems,
         {
           label: 'Вийти',
           icon: 'pi pi-sign-out',

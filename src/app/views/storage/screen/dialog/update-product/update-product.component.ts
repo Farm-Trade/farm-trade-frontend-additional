@@ -1,10 +1,10 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DynamicAlertService} from "../../../../../shared/services/dynamic-alert.service";
 import {ProductService} from "../../../../../services/storage/product.service";
 import {Product} from "../../../model/product.model";
-import {catchError, map, Observable, Observer, of, Subject} from "rxjs";
+import {catchError, finalize, map, Observable, Observer, of, Subject} from "rxjs";
 import {ProductNameService} from "../../../../../services/storage/product-name.service";
 import {SelectItem} from "primeng/api";
 import {ProductType} from "../../../enums/product-type.enum";
@@ -13,7 +13,6 @@ import {UpdateProductDto} from "../../../model/update-product-dto.model";
 import {CreateProductDto} from "../../../model/create-product-dto.model";
 import {SpinnerService} from "../../../../../services/shared/spinner.service";
 import {environment} from "../../../../../../environments/environment";
-import {Image} from "primeng/image/image";
 
 @Component({
   selector: 'app-update-product',
@@ -26,7 +25,6 @@ export class UpdateProductComponent implements OnInit {
   public uploadLabel: string;
   public readonly product: Product;
   public readonly form: FormGroup;
-  public readonly pageKey: string;
   public readonly isUpdateWindow: boolean;
 
   constructor(
@@ -41,15 +39,10 @@ export class UpdateProductComponent implements OnInit {
     this.product = this.config.data.product;
     this.isUpdateWindow = this.config.data.isUpdateWindow;
     this.form = this.getFrom();
-    this.pageKey = 'app-update-product';
-    this.dynamicAlertService.clearAlertByKey(this.pageKey);
     this.uploadLabel = this.isUpdateWindow ? this.product.img : 'Завантажте зображення';
     this.imgSrc = this.isUpdateWindow && this.product.img ? `${environment.backendUrl}/api/${this.product.img}` : null;
     const queryParams: { [key: string]: any } = {type: ProductType.APPLE, size: 10_000};
-    this.productNames$ = this.productServiceName.getProductNames(queryParams).pipe(
-      catchError(() => of(null)),
-      map(page => page ? page.content.map(({id, name}) => ({value: id, label: name})) : [])
-    );
+    this.productNames$ = this.productServiceName.getProductNamesAsSelectedItems(queryParams);
   }
 
   ngOnInit(): void {
@@ -64,12 +57,17 @@ export class UpdateProductComponent implements OnInit {
     const observer: Observer<Product> = {
       next: product => afterSave.next(product),
       error: error => afterSave.next(error),
-      complete: () => this.spinnerService.hide()
+      complete: () => {
+      }
     }
     if (this.isUpdateWindow) {
-      this.productService.updateProduct(this.product.id, UpdateProductDto.fromObject(values)).subscribe(observer)
+      this.productService.updateProduct(this.product.id, UpdateProductDto.fromObject(values))
+        .pipe(finalize(() => this.spinnerService.hide()))
+        .subscribe(observer)
     } else {
-      this.productService.createProduct(CreateProductDto.fromObject(values)).subscribe(observer);
+      this.productService.createProduct(CreateProductDto.fromObject(values))
+        .pipe(finalize(() => this.spinnerService.hide()))
+        .subscribe(observer);
     }
   }
 
@@ -84,7 +82,7 @@ export class UpdateProductComponent implements OnInit {
     const file: File = (event.target as any).files[0];
     this.form.controls['img'].setValue(file)
     this.uploadLabel = file.name;
-    const reader  = new FileReader();
+    const reader = new FileReader();
     reader.onloadend = () => {
       this.imgSrc = reader.result;
     };
@@ -93,20 +91,25 @@ export class UpdateProductComponent implements OnInit {
 
   private onSaveResponseHandler(response: Product | HttpErrorResponse): void {
     if (response instanceof HttpErrorResponse) {
-      this.dynamicAlertService.pushSimpleAlert('Підчас створення продукції сталась помилка', this.pageKey);
+      this.dynamicAlertService.handleError(response);
       return;
     }
     const img: AbstractControl = this.form.controls['img'].value;
     if (img && img instanceof File) {
+      this.spinnerService.show();
       const uploadObserver: Observer<void> = {
         next: () => this.ref.close(response),
-        error: () => this.dynamicAlertService.pushSimpleAlert(
-          'Підчас завантаження фото сталась помилка',
-          this.pageKey
-        ),
-        complete: () => {}
+        error: () => {
+        },
+        complete: () => {
+        }
       };
-      this.productService.updateImage(response.id, img).subscribe(uploadObserver)
+      this.productService.updateImage(response.id, img)
+        .pipe(
+          catchError(this.dynamicAlertService.handleError.bind(this.dynamicAlertService)),
+          finalize(() => this.spinnerService.hide())
+        )
+        .subscribe(uploadObserver)
       return;
     }
     this.ref.close(response);

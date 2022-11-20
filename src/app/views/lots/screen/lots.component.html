@@ -1,0 +1,66 @@
+<p-toolbar [style]="{ marginBottom: '1rem'}">
+  <ng-template pTemplate="left">
+    <button
+      pButton
+      pRipple
+      label="Додати"
+      icon="pi pi-plus"
+      class="p-button-raised p-button-text p-button-plain"
+      [style]="{ marginRight: '1rem'}"
+      (click)="addOrderRequest()"
+    ></button>
+  </ng-template>
+
+  <ng-template pTemplate="right">
+  </ng-template>
+</p-toolbar>
+
+<p-table
+  [value]="page?.content || []"
+  [lazy]="true"
+  [selection]="selectedOrderRequests"
+  [selectAll]="selectAll"
+  [paginator]="true"
+  [rows]="page?.size || 10"
+  [totalRecords]="page?.totalElements || 0"
+  [loading]="loading"
+  (onLazyLoad)="loadOrderRequests($event)"
+  responsiveLayout="scroll"
+  dataKey="id"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 3rem"></th>
+      <th>Продукт</th>
+      <th>Кількість</th>
+      <th>Ціна</th>
+      <th>Ставка</th>
+      <th>Ультимативна ціна</th>
+      <th>Дата відправки</th>
+      <th>Дата кінця лоту</th>
+      <th>Остання ставка</th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-lot>
+    <tr>
+      <td></td>
+      <td>{{lot.productName.name}}</td>
+      <td>{{lot.quantity}}кг</td>
+      <td>{{lot.unitPrice | currency : 'UAH'}}</td>
+      <td>{{lot.unitPriceUpdate | currency : 'UAH'}}</td>
+      <td>{{lot.ultimatePrice | currency : 'UAH'}}</td>
+      <td>{{lot.loadingDate | date : 'dd/MM/yyyy, h:mm'}}</td>
+      <td>{{lot.auctionEndDate | date : 'dd/MM/yyyy, h:mm'}}</td>
+      <td>
+        <ng-container *ngIf="lot.priceUpdateHistory | lastPriceUpdater as lastPriceUpdateHistory">
+          {{lastPriceUpdateHistory.user.fullName}}
+        </ng-container>
+      </td>
+      <td>
+        <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-plain" (click)="updateOrderRequest(lot)"></button>
+        <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-text p-button-plain" (click)="removeOrderRequest(lot.id)"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

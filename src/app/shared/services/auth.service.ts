@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject, Observable, tap} from "rxjs";
+import {BehaviorSubject, map, Observable, of, switchMap, tap, throwError} from "rxjs";
 import {AuthenticationDto} from "../entities/auth/authentication-dto.model";
 import {TokenDto} from "../entities/auth/token-dto.model";
 import jwt_decode from "jwt-decode";
 import {JwtUser} from "../entities/user/jwt-user.model";
 import {LocalStorage} from "../entities/enums/local-storage.enum";
 import {JwtParsed} from "../entities/auth/jwt-parsed.model";
-import {Router} from "@angular/router";
+import {Params, Router} from "@angular/router";
+import {FormUtil} from "../../utils/form.util";
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -66,6 +67,20 @@ export class AuthService {
     return !!user && user.id === id;
   }
 
+  public getRightUser(params: Observable<Params>): Observable<JwtUser> {
+    return params.pipe(
+      map(({ id }) => +id),
+      switchMap( id => {
+        if (!FormUtil.isNumberCorrectId(id) || !this.isOwnUserId(id)) {
+          this.router.navigate(['/']);
+          return throwError(() => "Невірний користувач переданий");
+        }
+        return this.user$.pipe(
+          switchMap(user => user ? of(user) : throwError(() => "Користувача не існує"))
+        );
+      })
+    );
+  }
   private static fromToken(token: string): JwtUser {
     const jwtParsed: JwtParsed = JwtParsed.fromObject(jwt_decode(token));
     return  JwtUser.fromJwtParsed(jwtParsed);

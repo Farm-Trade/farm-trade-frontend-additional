@@ -1,47 +1,28 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, map, Observable, Subject} from "rxjs";
+import {BehaviorSubject, map, Observable, Subject, throwError} from "rxjs";
 import {DynamicAlert} from "../entities/alert/dynamic-alert.model";
+import {MessageService} from "primeng/api";
+import {HttpErrorResponse} from "@angular/common/http";
+import {ParsedError} from "../entities/api/parsed-error.interface";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DynamicAlertService {
-  public readonly alerts$: Observable<{[key: string]: DynamicAlert}>;
-  private readonly _alerts$: BehaviorSubject<{[key: string]: DynamicAlert}>;
-
-  constructor() {
-    this._alerts$ = new BehaviorSubject<{[key: string]: DynamicAlert}>({});
-    this.alerts$ = this._alerts$.asObservable();
+  constructor(private readonly messageService: MessageService) {
   }
 
-  public pushAlert(alert: DynamicAlert, key: string, removeIn: number = 0): void {
-    const oldAlerts: {[key: string]: DynamicAlert} = this._alerts$.getValue();
-    oldAlerts[key] = alert;
-    this._alerts$.next(oldAlerts);
-
-    if (removeIn) {
-      setTimeout(() => {
-        if (oldAlerts[key]) {
-          this.clearAlertByKey(key);
-        }
-      }, removeIn);
-    }
+  public handleError(error: HttpErrorResponse): Observable<never> {
+    const parsedError: ParsedError = error.error;
+    this.addErrorMessage(parsedError.message);
+    return throwError(() => error);
   }
 
-  public pushSimpleAlert(message: string, key: string, removeIn: number = 0, ): void {
-    const alert: DynamicAlert = new DynamicAlert(message);
-    this.pushAlert(alert, key, removeIn);
+  public addSuccessMessage(message: string): void {
+    this.messageService.add({ summary: 'Все успішно', detail: message, severity: 'success', key: 'tc'})
   }
 
-  public getAlertsByKey(key: string): Observable<DynamicAlert> {
-    return this.alerts$.pipe(map(alerts => alerts[key]));
-  }
-
-  public clearAlertByKey(key: string): void {
-    const oldAlerts: {[key: string]: DynamicAlert} = this._alerts$.getValue();
-    if (oldAlerts[key]) {
-      delete oldAlerts[key];
-      this._alerts$.next(oldAlerts);
-    }
+  public addErrorMessage(message: string) {
+    this.messageService.add({ summary: 'Відбулась помилка', detail: message, severity: 'error', key: 'tc'})
   }
 }

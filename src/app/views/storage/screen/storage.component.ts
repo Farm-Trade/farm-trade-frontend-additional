@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ProductService} from "../../../services/storage/product.service";
 import {ProductNameService} from "../../../services/storage/product-name.service";
 import {AuthService} from "../../../shared/services/auth.service";
-import {finalize, map, Observer, of, switchMap, throwError} from "rxjs";
+import {catchError, finalize, map, Observer, of, switchMap, throwError} from "rxjs";
 import {JwtUser} from "../../../shared/entities/user/jwt-user.model";
 import {FormUtil} from "../../../utils/form.util";
 import {Product} from "../model/product.model";
@@ -26,46 +26,37 @@ export class StorageComponent implements OnInit, AfterViewInit {
   public selectedProducts: Product[] = [];
   public selectAll: boolean;
   public loading: boolean = false;
-  private readonly pageKey: string;
 
   constructor(
     private readonly activateRoute: ActivatedRoute,
     private readonly productService: ProductService,
-    private readonly productNameService: ProductNameService,
     private readonly authService: AuthService,
-    private readonly router: Router,
     private readonly dialogService: DialogService,
     private readonly dynamicAlertService: DynamicAlertService,
     private readonly spinnerService: SpinnerService,
     private readonly changeDetectorRef: ChangeDetectorRef
   ) {
-    this.pageKey = 'app-storage';
     this.selectAll = false;
-    this.dynamicAlertService.clearAlertByKey(this.pageKey);
-    this.activateRoute.params.pipe(
-      map(({id}) => +id),
-      switchMap(id => {
-        if (!FormUtil.isNumberCorrectId(id) || !this.authService.isOwnUserId(id)) {
-          this.router.navigate(['/']);
-          return throwError(() => "Wrong user id passed");
-        }
-        return this.authService.user$.pipe(
-          switchMap(user => user ? of(user) : throwError(() => "User does not exists"))
-        );
-      })
-    ).subscribe(user => this.user = user)
+    this.authService.getRightUser(this.activateRoute.params)
+      .pipe(
+        catchError(errorMessage => {
+          this.dynamicAlertService.addErrorMessage(errorMessage);
+          return throwError(() => errorMessage);
+        })
+      )
+      .subscribe(user => this.user = user)
   }
 
   public ngOnInit(): void {
   }
 
-  public ngAfterViewInit() {
+  public ngAfterViewInit(): void {
     this.changeDetectorRef.detectChanges();
   }
 
   public loadProducts(config: { first: number, rows: number }): void {
     const page: number = config.first / (config.rows || 1);
-    this.getProducts({ page, owner: this.user.id })
+    this.getProducts({ page, owner: this.user.id });
   }
 
   public addProduct(): void {
@@ -80,32 +71,26 @@ export class StorageComponent implements OnInit, AfterViewInit {
     this.spinnerService.show();
     const observer: Observer<void> = {
       next: this.loadProducts.bind(this, { first: 0, rows: 0}),
-      error: () => this.dynamicAlertService.pushSimpleAlert("Не вдалось видалити продукцію", this.pageKey),
-      complete: () => this.spinnerService.hide()
+      error: () => {},
+      complete: () => {}
     }
-    this.productService.delete(id).subscribe(observer);
-  }
-
-  public onSelectionChange($event: any) {
-    console.log('onSelectionChange not implemented');
-  }
-
-  public onSelectAllChange($event: any) {
-    console.log('onSelectAllChange not implemented');
-  }
-
-  removeSelectedProduct(): void {
-    console.log('removeSelectedProduct not implemented');
+    this.productService.delete(id).pipe(
+      catchError(this.dynamicAlertService.handleError.bind(this.dynamicAlertService)),
+      finalize(() => this.spinnerService.hide())
+    ).subscribe(observer);
   }
 
   private getProducts(queryParams: { [key: string]: any } = {}): void {
     this.loading = true;
     const observer: Observer<Page<Product>> = {
       next: page => this.page = page,
-      error: () => this.dynamicAlertService.pushSimpleAlert("Не вдалось завантажити продукцію", this.pageKey),
-      complete: () => this.loading = false
+      error: () => {},
+      complete: () => {}
     };
-    this.productService.getProducts(queryParams).subscribe(observer);
+    this.productService.getProducts(queryParams).pipe(
+      catchError(this.dynamicAlertService.handleError.bind(this.dynamicAlertService)),
+      finalize(() => this.loading = false)
+    ).subscribe(observer);
   }
 
   private openProductModal(product: Product, isUpdateWindow: boolean): void {
@@ -113,7 +98,8 @@ export class StorageComponent implements OnInit, AfterViewInit {
       UpdateProductComponent,
       {
         width: '500px',
-        data: { product, isUpdateWindow }
+        data: { product, isUpdateWindow },
+        header: `${isUpdateWindow ? 'Змінити' : 'Створити'} Продукт`
       }
     );
 

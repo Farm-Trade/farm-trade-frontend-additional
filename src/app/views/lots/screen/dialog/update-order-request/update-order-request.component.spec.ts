@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DynamicAlertComponent } from './dynamic-alert.component';
+import { UpdateOrderRequestComponent } from './update-order-request.component';
 
-describe('DynamicAlertComponent', () => {
-  let component: DynamicAlertComponent;
-  let fixture: ComponentFixture<DynamicAlertComponent>;
+describe('UpdateOrderRequestComponent', () => {
+  let component: UpdateOrderRequestComponent;
+  let fixture: ComponentFixture<UpdateOrderRequestComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DynamicAlertComponent ]
+      declarations: [ UpdateOrderRequestComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DynamicAlertComponent);
+    fixture = TestBed.createComponent(UpdateOrderRequestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -4,7 +4,7 @@ import {MenubarModule} from "primeng/menubar";
 import {InputTextModule} from "primeng/inputtext";
 import {ButtonModule} from "primeng/button";
 import {DynamicDialogModule} from "primeng/dynamicdialog";
-import {SharedModule} from "primeng/api";
+import {MessageService, SharedModule} from "primeng/api";
 import {RippleModule} from "primeng/ripple";
 import {InputMaskModule} from "primeng/inputmask";
 import {MessageModule} from "primeng/message";
@@ -22,6 +22,10 @@ import {TableModule} from "primeng/table";
 import {ToolbarModule} from "primeng/toolbar";
 import {GalleriaModule} from "primeng/galleria";
 import {ImageModule} from "primeng/image";
+import {ToastModule} from "primeng/toast";
+import {StepsModule} from "primeng/steps";
+import {CalendarModule} from "primeng/calendar";
+import {InputTextareaModule} from "primeng/inputtextarea";
 
 
 
@@ -48,7 +52,11 @@ import {ImageModule} from "primeng/image";
     TableModule,
     ToolbarModule,
     GalleriaModule,
-    ImageModule
+    ImageModule,
+    ToastModule,
+    StepsModule,
+    CalendarModule,
+    InputTextareaModule
   ],
   exports: [
     MenubarModule,
@@ -73,7 +81,12 @@ import {ImageModule} from "primeng/image";
     TableModule,
     ToolbarModule,
     GalleriaModule,
-    ImageModule
-  ]
+    ImageModule,
+    ToastModule,
+    StepsModule,
+    CalendarModule,
+    InputTextareaModule
+  ],
+  providers: [MessageService]
 })
 export class PrimeNgModule { }

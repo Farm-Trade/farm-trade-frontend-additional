@@ -5,12 +5,20 @@ import {ProductNameService} from "../services/storage/product-name.service";
 import {SharedCustomModule} from "../shared/shared-custom.module";
 import {CommonModule} from "@angular/common";
 import { UpdateProductComponent } from './storage/screen/dialog/update-product/update-product.component';
+import {LotsComponent} from "./lots/screen/lots.component";
+import { LastPriceUpdaterPipe } from './lots/pipes/last-price-updater.pipe';
+import { UpdateOrderRequestComponent } from './lots/screen/dialog/update-order-request/update-order-request.component';
+import { OrderRequestReviewComponent } from './lots/screen/order-request-review/order-request-review.component';
 
 
 @NgModule({
   declarations: [
     StorageComponent,
-    UpdateProductComponent
+    UpdateProductComponent,
+    LotsComponent,
+    LastPriceUpdaterPipe,
+    UpdateOrderRequestComponent,
+    OrderRequestReviewComponent
   ],
   providers: [
     ProductService,

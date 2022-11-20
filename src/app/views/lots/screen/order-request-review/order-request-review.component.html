@@ -1,0 +1,42 @@
+<div class="field-block">
+  <div>
+    <label>Назва Продукту</label>
+    <b>{{productName}}</b>
+  </div>
+  <div>
+    <label>Кількість</label>
+    <b>{{orderRequest.quantity}}кг</b>
+  </div>
+</div>
+<div class="field-block">
+  <div>
+    <label>Ціна</label>
+    <b>{{orderRequest.unitPrice | currency : 'UAH'}}</b>
+  </div>
+  <div>
+    <label>Ставка підняття</label>
+    <b>{{orderRequest.unitPriceUpdate | currency : 'UAH'}}</b>
+  </div>
+  <div>
+    <label>Ціна завершення лоту</label>
+    <b>{{orderRequest.ultimatePrice | currency : 'UAH'}}</b>
+  </div>
+</div>
+<div class="field-block">
+  <div style="flex: .9; margin: 0.7rem 0">
+    <label>Нотатки</label>
+    <textarea pInputTextarea rows="5" [readonly]="true" [value]="orderRequest.notes"></textarea>
+  </div>
+</div>
+<div class="field-block">
+  <div>
+    <label>Дата відправки</label>
+    <b>{{orderRequest.loadingDate | date : 'MMM d, y, h:mm:ss'}}</b>
+  </div>
+  <div>
+    <label>Дата закінчення аукціону</label>
+    <b>{{orderRequest.auctionEndDate | date : 'MMM d, y, h:mm:ss'}}</b>
+  </div>
+</div>
+
+

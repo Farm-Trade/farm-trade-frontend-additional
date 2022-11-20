@@ -1,6 +1,5 @@
 <div *ngIf="!isUserActivationShown" class="dynamic-form registration-dialog-box" [formGroup]="form">
   <h2>Створіть свій профіль</h2>
-  <app-dynamic-alert [key]="pageKey"></app-dynamic-alert>
   <p-inputMask
     mask="(999) 999-9999"
     placeholder="Телефон"
@@ -42,7 +41,6 @@
 </div>
 <div *ngIf="isUserActivationShown" class="dynamic-form">
   <h2>Введіть код активації</h2>
-  <app-dynamic-alert [key]="pageKey"></app-dynamic-alert>
   <p-inputMask
     mask="999-999"
     placeholder="Код Активації"

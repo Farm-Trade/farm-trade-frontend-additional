@@ -1,0 +1,20 @@
+.field-block {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 1rem 0;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+
+    b {
+      margin: .2rem 0;
+    }
+  }
+}

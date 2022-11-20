@@ -23,7 +23,6 @@ export class LoginDialogComponent implements OnInit {
   passwordInput: ElementRef | undefined;
   public form: FormGroup;
   public nextButtonPressed: boolean;
-  public pageKey: string;
   public loginForm;
 
   constructor(
@@ -34,14 +33,11 @@ export class LoginDialogComponent implements OnInit {
     private readonly dynamicAlertService: DynamicAlertService
   ) {
     this.nextButtonPressed = false;
-    this.pageKey = 'app-auth-dialog';
     this.loginForm = LoginFrom;
     this.form = this.fb.group({
       [this.loginForm.PHONE]: [null, [Validators.required, Validators.minLength(14), Validators.maxLength(15)]],
       [this.loginForm.PASSWORD]: [null, [Validators.required, Validators.minLength(10)]]
     });
-
-    this.dynamicAlertService.clearAlertByKey(this.pageKey);
   }
 
   public ngOnInit(): void {
@@ -53,13 +49,7 @@ export class LoginDialogComponent implements OnInit {
     values.phone = `+38${FormUtil.parsePhoneFromPrimeNgInput(values.phone)}`;
     const authenticationDto: AuthenticationDto = AuthenticationDto.fromObject(values);
     this.authService.login(authenticationDto).pipe(
-      catchError((error: HttpErrorResponse) => {
-        this.dynamicAlertService.pushSimpleAlert(
-          'Користуача з таким телефоном або паролем не існує',
-          this.pageKey
-        );
-        return throwError(() => error);
-      }),
+      catchError(this.dynamicAlertService.handleError.bind(this.dynamicAlertService)),
       finalize(() => this.form.enable())
     ).subscribe(() => {
       this.ref.close();

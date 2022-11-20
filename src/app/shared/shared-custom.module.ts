@@ -6,29 +6,26 @@ import {HeaderComponent} from './components/header/header.component';
 import {BrowserModule} from "@angular/platform-browser";
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {AuthModule} from "./auth/auth.module";
 import {GetControlPipe} from './pipes/get-control.pipe';
 import {ReactiveFormsModule} from "@angular/forms";
-import { DynamicAlertComponent } from './components/dynamic-alert/dynamic-alert.component';
-import {MenuModule} from "primeng/menu";
+import {InputTextareaModule} from "primeng/inputtextarea";
 
 
 @NgModule({
   declarations: [
     FooterComponent,
     HeaderComponent,
-    GetControlPipe,
-    DynamicAlertComponent
+    GetControlPipe
   ],
-    imports: [
-        CommonModule,
-        PrimeNgModule,
-        BrowserModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
+  imports: [
+    CommonModule,
+    PrimeNgModule,
+    BrowserModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule
 
-    ],
+  ],
   exports: [
     PrimeNgModule,
     FooterComponent,
@@ -37,8 +34,7 @@ import {MenuModule} from "primeng/menu";
     HttpClientModule,
     BrowserAnimationsModule,
     GetControlPipe,
-    ReactiveFormsModule,
-    DynamicAlertComponent
+    ReactiveFormsModule
   ]
 })
 export class SharedCustomModule {

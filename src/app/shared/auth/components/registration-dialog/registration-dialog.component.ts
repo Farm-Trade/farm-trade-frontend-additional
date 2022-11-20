@@ -20,7 +20,6 @@ import {AuthAction} from "../../enums/auth-action.enum";
 })
 export class RegistrationDialogComponent implements OnInit {
   public form: FormGroup;
-  public pageKey: string;
   public registrationForm = RegistrationForm;
   public isUserActivationShown: boolean;
   public activationControl: FormControl;
@@ -33,7 +32,6 @@ export class RegistrationDialogComponent implements OnInit {
     private readonly userService: UserService,
     private readonly dynamicAlertService: DynamicAlertService
   ) {
-    this.pageKey = 'app-registration-dialog';
     this.isUserActivationShown = false;
     this.roleOptions = [
       { name: 'Фермер', value: UserRole.FARMER },
@@ -55,45 +53,30 @@ export class RegistrationDialogComponent implements OnInit {
       Validators.required,
       Validators.minLength(6),
       Validators.maxLength(7)
-    ])
-    this.dynamicAlertService.clearAlertByKey(this.pageKey);
+    ]);
   }
 
   public ngOnInit(): void {
   }
 
   public registration(): void {
-    this.dynamicAlertService.clearAlertByKey(this.pageKey);
     this.form.disable();
     const values = {...this.form.value};
     values.phone = `+38${FormUtil.parsePhoneFromPrimeNgInput(values.phone)}`;
     const userCreateDto: UserCreateDto = UserCreateDto.fromObject(values);
 
     this.userService.registration(userCreateDto).pipe(
-      catchError((error: HttpErrorResponse) => {
-        this.dynamicAlertService.pushSimpleAlert(
-          'Підчас створення профілю відбулась помилка',
-          this.pageKey
-        );
-        return throwError(() => error);
-      }),
+      catchError(this.dynamicAlertService.handleError.bind(this.dynamicAlertService)),
       finalize(() => this.form.enable())
     ).subscribe(() => this.onActivationSetUp());
   }
 
   public activate(): void {
-    this.dynamicAlertService.clearAlertByKey(this.pageKey);
     this.activationControl.disable();
     const activationCodeDto: ActivationCodeDto = new ActivationCodeDto(this.activationControl.value.replace("-", ""));
 
     this.userService.activate(activationCodeDto).pipe(
-      catchError((error: HttpErrorResponse) => {
-        this.dynamicAlertService.pushSimpleAlert(
-          'Підчас активації профілю відбулась помилка',
-          this.pageKey
-        );
-        return throwError(() => error);
-      }),
+      catchError(this.dynamicAlertService.handleError.bind(this.dynamicAlertService)),
       finalize(() => this.activationControl.enable())
     ).subscribe(() => this.ref.close(AuthAction.AFTER_SUCCESS_REGISTRATION));
   }

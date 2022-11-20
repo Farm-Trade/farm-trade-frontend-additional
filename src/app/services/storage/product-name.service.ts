@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {map, Observable} from "rxjs";
+import {catchError, map, Observable, of} from "rxjs";
 import {Page} from "../../shared/entities/api/page.model";
 import {ProductName} from "../../views/storage/model/product-name.model";
+import {SelectItem} from "primeng/api";
 
 @Injectable()
 export class ProductNameService {
@@ -17,6 +18,13 @@ export class ProductNameService {
     const params: HttpParams = new HttpParams({fromObject: queryParams});
     return this.httpClient.get<Page<ProductName>>(this.url, {params}).pipe(
       map(page => Page.fromObject(page, page.content.map(ProductName.fromObject)))
+    );
+  }
+
+  public getProductNamesAsSelectedItems(queryParams: { [key: string]: any } = {}): Observable<SelectItem[]> {
+    return this.getProductNames(queryParams).pipe(
+      catchError(() => of(null)),
+      map(page => page ? page.content.map(({id, name}) => ({value: id, label: name})) : [])
     );
   }
 }

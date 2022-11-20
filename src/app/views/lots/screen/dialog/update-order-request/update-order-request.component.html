@@ -1,0 +1,93 @@
+<p-steps [model]="items" [readonly]="true" [activeIndex]="(currentStep$ | async) || 0"></p-steps>
+<div class="dynamic-form internal" [formGroup]="form" [ngSwitch]="currentStep$ | async">
+  <ng-container *ngSwitchCase="steps.PRODUCT_AND_QUANTITY" formGroupName="productAndQuantity">
+    <p-dropdown
+      [options]="productNames"
+      [virtualScroll]="true"
+      [itemSize]="31"
+      [filter]="false"
+      appendTo="body"
+      formControlName="productName"
+      placeholder="Виберіть Сорт"
+    ></p-dropdown>
+    <div class="p-inputgroup">
+      <p-inputNumber formControlName="quantity" mode="decimal" placeholder="Кількість"></p-inputNumber>
+      <span class="p-inputgroup-addon">кг</span>
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="steps.PRICING_AND_NOTES" formGroupName="pricingAndNotes">
+    <div class="p-inputgroup">
+      <p-inputNumber [minFractionDigits]="2" [maxFractionDigits]="2" placeholder="Ціна за кг" formControlName="unitPrice"
+                     mode="decimal"></p-inputNumber>
+      <span class="p-inputgroup-addon">грн</span>
+    </div>
+    <div class="p-inputgroup">
+      <p-inputNumber [minFractionDigits]="2" [maxFractionDigits]="2" placeholder="Ставка підняття" formControlName="unitPriceUpdate"
+                     mode="decimal"></p-inputNumber>
+      <span class="p-inputgroup-addon">грн</span>
+    </div>
+    <div class="p-inputgroup">
+      <p-inputNumber [minFractionDigits]="2" [maxFractionDigits]="2" placeholder="Ціна завершення лоту" formControlName="ultimatePrice"
+                     mode="decimal"></p-inputNumber>
+      <span class="p-inputgroup-addon">грн</span>
+    </div>
+    <textarea rows="5" pInputTextarea placeholder="Нотатки" formControlName="notes"></textarea>
+  </ng-container>
+  <ng-container *ngSwitchCase="steps.DATES" formGroupName="dates">
+    <p-calendar
+      [showTime]="true"
+      [minDate]="minDate"
+      formControlName="loadingDate"
+      appendTo="body"
+      inputId="time"
+      placeholder="Дата відправки"
+    ></p-calendar>
+    <p-calendar
+      [showTime]="true"
+      [minDate]="minDate"
+      formControlName="auctionEndDate"
+      appendTo="body"
+      inputId="time"
+      placeholder="Дата закінчення аукціону"
+    ></p-calendar>
+  </ng-container>
+  <ng-container *ngSwitchCase="steps.REVIEW">
+    <app-order-request-review
+      *ngIf="orderRequestFromForm"
+      [orderRequest]="orderRequestFromForm"
+      [ngStyle]="{ width: '100%' }"
+      [productName]="selectedProductName"
+    ></app-order-request-review>
+  </ng-container>
+  <div class="button-block">
+    <button
+      *ngIf="(currentStep$ | async) !== steps.PRODUCT_AND_QUANTITY"
+      pButton
+      pRipple
+      type="button"
+      label="Назад"
+      class="p-button-raised p-button-text p-button-plain"
+      (click)="onBack()"
+    ></button>
+    <button
+      *ngIf="(currentStep$ | async) !== steps.REVIEW"
+      pButton
+      pRipple
+      type="button"
+      label="Далі"
+      class="p-button-raised p-button-text p-button-plain"
+      [disabled]="!(currentForm$ | async)?.valid"
+      (click)="onNext()"
+    ></button>
+    <button
+      *ngIf="(currentStep$ | async) === steps.REVIEW"
+      pButton
+      pRipple
+      type="button"
+      label="Зберегти"
+      class="p-button-raised p-button-text p-button-success"
+      [disabled]="!(currentForm$ | async)?.valid"
+      (click)="onSave()"
+    ></button>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 :root {
   --spinner-size: 130px;
+  --inputs-size: 100%;
 }
 
 /*
@@ -107,7 +108,7 @@ input, select {
 
 
 form .p-dropdown, .p-calendar{
-  width: 100%;
+  width: var(--inputs-size);
 }
 
 button.regular-button {
@@ -122,6 +123,16 @@ button.regular-button {
   align-items: center;
   height: 100%;
   justify-content: center;
+}
+
+.dynamic-form p-calendar {
+  width: var(--inputs-size);
+}
+.dynamic-form p-calendar .p-calendar{
+  width: var(--inputs-size);
+}
+.dynamic-form p-calendar {
+  margin-top: .7em;
 }
 
 .dynamic-form h2 {
@@ -149,8 +160,13 @@ button.regular-button {
   width: 80%;
   margin-top: .7em;
 }
+.dynamic-form textarea {
+  margin-top: 0.7em;
+  width: var(--inputs-size);
+  resize: none;
+}
 .dynamic-form p-fileupload .p-fileupload-choose {
-  width: 100%;
+  width: var(--inputs-size);
 }
 .dynamic-form .button-block {
   display: flex;
@@ -158,7 +174,7 @@ button.regular-button {
   flex-direction: row;
   align-content: center;
   align-items: flex-end;
-  width: 100%;
+  width: var(--inputs-size);
   margin-top: 1rem;
 }
 .dynamic-form .button-block button {
@@ -172,7 +188,7 @@ button.regular-button {
 }
 
 .custom-spinner {
-  height: var(--spinner-size)!important;
+  height: var(--inputs-size)!important;
   width: var(--spinner-size)!important;;
   position: absolute!important;
   z-index: 1;
@@ -186,18 +202,22 @@ table td {
 }
 
 .dynamic-form.internal input {
-  width: 100%;
+  width: var(--inputs-size);
 }
 .dynamic-form.internal .input {
-  width: 100%;
+  width: var(--inputs-size);
 }
 .dynamic-form.internal  p-dropdown {
-  width: 100%;
+  width: var(--inputs-size);
 }
 .dynamic-form.internal p-dropdown .p-dropdown {
-  width: 100%;
+  width: var(--inputs-size);
 }
 .dynamic-form.internal .image-preview {
   max-height: 150px;
   height: 100%;
+}
+
+.p-steps .p-steps-item .p-menuitem-link .p-steps-title {
+  margin-bottom: 0.5rem;
 }
