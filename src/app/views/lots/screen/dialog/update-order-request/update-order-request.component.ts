@@ -43,12 +43,12 @@ export class UpdateOrderRequestComponent implements OnInit {
   ) {
     this.orderRequest = this.config.data.orderRequest;
     this.isUpdateWindow = this.config.data.isUpdateWindow;
-    this._currentStep$ = new BehaviorSubject<OrderCreateStep>(OrderCreateStep.PRODUCT_AND_QUANTITY);
+    this._currentStep$ = new BehaviorSubject<OrderCreateStep>(OrderCreateStep.PRODUCT_QUANTITY_AND_SIZE);
     this.currentStep$ = this._currentStep$.asObservable();
     this.currentForm$ = this._currentStep$.asObservable().pipe(map(this.currentFormHandler.bind(this)));
     this.items = [
-      {label: 'Кількість та Ціни'},
-      {label: 'Продукт та Нотатки'},
+      {label: 'Продукт, Кількість та Розмір'},
+      {label: 'Ціни та Нотатки'},
       {label: 'Дати'},
       {label: 'Підтвердження'}
     ];
@@ -102,17 +102,17 @@ export class UpdateOrderRequestComponent implements OnInit {
   }
 
   private fromForm(): CreateUpdateOrderRequestDto {
-    const productAndQuantity = {...this.receiveForm('productAndQuantity').value};
+    const productQuantityAndSize = {...this.receiveForm('productQuantityAndSize').value};
     const pricingAndNotes = {...this.receiveForm('pricingAndNotes').value};
     const dates = {...this.receiveForm('dates').value};
 
     const orderRequest: CreateUpdateOrderRequestDto = {
-      quantity: productAndQuantity.quantity,
+      quantity: productQuantityAndSize.quantity,
       unitPrice: pricingAndNotes.unitPrice,
-      ultimatePrice: pricingAndNotes.ultimatePrice,
+      sizeFrom: productQuantityAndSize.sizeFrom,
       notes: pricingAndNotes.notes,
       unitPriceUpdate: pricingAndNotes.unitPriceUpdate,
-      productName: productAndQuantity.productName,
+      productName: productQuantityAndSize.productName,
       loadingDate: DateUtil.toLocalDateTimeFormat(dates.loadingDate),
       auctionEndDate: DateUtil.toLocalDateTimeFormat(dates.auctionEndDate)
     } as CreateUpdateOrderRequestDto;
@@ -129,8 +129,8 @@ export class UpdateOrderRequestComponent implements OnInit {
 
   private currentFormHandler(step: OrderCreateStep): FormGroup {
     switch (step) {
-      case OrderCreateStep.PRODUCT_AND_QUANTITY:
-        return this.receiveForm('productAndQuantity');
+      case OrderCreateStep.PRODUCT_QUANTITY_AND_SIZE:
+        return this.receiveForm('productQuantityAndSize');
       case OrderCreateStep.PRICING_AND_NOTES:
         return this.receiveForm('pricingAndNotes');
       case OrderCreateStep.DATES:
@@ -142,19 +142,19 @@ export class UpdateOrderRequestComponent implements OnInit {
     }
   }
 
-  private receiveForm(formKey: 'productAndQuantity' | 'pricingAndNotes' | 'dates'): FormGroup {
+  private receiveForm(formKey: 'productQuantityAndSize' | 'pricingAndNotes' | 'dates'): FormGroup {
     return this.form.controls[formKey] as FormGroup;
   }
 
   private getFrom(): FormGroup {
-    const productAndQuantity: FormGroup = this.fb.group({
+    const productQuantityAndSize: FormGroup = this.fb.group({
       productName: [this.orderRequest.productName ? this.orderRequest.productName.id : null, [Validators.required]],
-      quantity: [this.orderRequest.quantity || null, [Validators.required]]
+      quantity: [this.orderRequest.quantity || null, [Validators.required]],
+      sizeFrom: [this.orderRequest.sizeFrom || null, [Validators.required]],
     });
     const pricingAndNotes: FormGroup = this.fb.group({
       unitPrice: [this.orderRequest.unitPrice || null, [Validators.required]],
       unitPriceUpdate: [this.orderRequest.unitPriceUpdate || null, [Validators.required]],
-      ultimatePrice: [this.orderRequest.ultimatePrice || null, [Validators.required]],
       notes: [this.orderRequest.notes || null, []]
     });
     const dates: FormGroup = this.fb.group({
@@ -162,6 +162,6 @@ export class UpdateOrderRequestComponent implements OnInit {
       auctionEndDate: [this.orderRequest.auctionEndDate ? new Date(this.orderRequest.auctionEndDate) : null, [Validators.required]]
     });
 
-    return this.fb.group({productAndQuantity, pricingAndNotes, dates});
+    return this.fb.group({productQuantityAndSize, pricingAndNotes, dates});
   }
 }

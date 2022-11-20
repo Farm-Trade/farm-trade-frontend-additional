@@ -6,8 +6,8 @@ import {LotsComponent} from "./views/lots/screen/lots.component";
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
-  { path: 'storage/:id', component: StorageComponent},
-  { path: 'lots/:id', component: LotsComponent}
+  { path: 'user-storage', component: StorageComponent},
+  { path: 'user-lots', component: LotsComponent}
 ];
 
 @NgModule({

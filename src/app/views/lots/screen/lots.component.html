@@ -35,7 +35,7 @@
       <th>Кількість</th>
       <th>Ціна</th>
       <th>Ставка</th>
-      <th>Ультимативна ціна</th>
+      <th>Розмір від</th>
       <th>Дата відправки</th>
       <th>Дата кінця лоту</th>
       <th>Остання ставка</th>
@@ -49,7 +49,7 @@
       <td>{{lot.quantity}}кг</td>
       <td>{{lot.unitPrice | currency : 'UAH'}}</td>
       <td>{{lot.unitPriceUpdate | currency : 'UAH'}}</td>
-      <td>{{lot.ultimatePrice | currency : 'UAH'}}</td>
+      <td>{{lot.sizeFrom}}см</td>
       <td>{{lot.loadingDate | date : 'dd/MM/yyyy, h:mm'}}</td>
       <td>{{lot.auctionEndDate | date : 'dd/MM/yyyy, h:mm'}}</td>
       <td>
@@ -65,6 +65,8 @@
           type="button"
           icon="pi pi-pencil"
           class="p-button-rounded p-button-text p-button-plain"
+          pTooltip="Редагування"
+          tooltipPosition="top"
           (click)="updateOrderRequest(lot)"
         ></button>
         <button
@@ -72,8 +74,10 @@
           pButton
           pRipple
           type="button"
-          icon="pi pi-eye"
+          icon="pi pi-arrow-circle-up"
           class="p-button-rounded p-button-text p-button-plain"
+          pTooltip="Опублікувати"
+          tooltipPosition="top"
           (click)="publishOrderRequest(lot.id)"
         ></button>
         <button
@@ -83,6 +87,8 @@
           type="button"
           icon="pi pi-eye"
           class="p-button-rounded p-button-text p-button-plain"
+          pTooltip="Перевірити"
+          tooltipPosition="top"
           (click)="reviewOrderRequest(lot)"
         ></button>
         <button
@@ -92,6 +98,8 @@
           type="button"
           icon="pi pi-trash"
           class="p-button-rounded p-button-text p-button-plain"
+          pTooltip="Видалити"
+          tooltipPosition="top"
           (click)="removeOrderRequest(lot.id)"
         ></button>
       </td>

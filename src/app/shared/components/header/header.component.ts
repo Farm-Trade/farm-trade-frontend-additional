@@ -30,14 +30,14 @@ export class HeaderComponent implements OnInit {
         additionalItems.push({
             label: 'Склад',
             icon: 'pi pi-database',
-            command: () => this.router.navigate(['storage', user.id])
+            command: () => this.router.navigate(['user-storage'])
           });
       }
       if ([UserRole.RESELLER, UserRole.ADMIN].includes(this.user.role[0])) {
         additionalItems.push({
           label: 'Лоти',
           icon: 'pi pi-code',
-          command: () => this.router.navigate(['lots', user.id])
+          command: () => this.router.navigate(['user-lots'])
         });
       }
       this.userMenuItems = [

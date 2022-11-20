@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CreateUpdateOrderRequestDto} from "../../model/create-update-order-request-dto.model";
 import {OrderRequest} from "../../model/order-request.model";
 
 @Component({

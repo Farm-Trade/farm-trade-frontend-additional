@@ -1,6 +1,6 @@
 <p-steps [model]="items" [readonly]="true" [activeIndex]="(currentStep$ | async) || 0"></p-steps>
 <div class="dynamic-form internal" [formGroup]="form" [ngSwitch]="currentStep$ | async">
-  <ng-container *ngSwitchCase="steps.PRODUCT_AND_QUANTITY" formGroupName="productAndQuantity">
+  <ng-container *ngSwitchCase="steps.PRODUCT_QUANTITY_AND_SIZE" formGroupName="productQuantityAndSize">
     <p-dropdown
       [options]="productNames"
       [virtualScroll]="true"
@@ -14,6 +14,11 @@
       <p-inputNumber formControlName="quantity" mode="decimal" placeholder="Кількість"></p-inputNumber>
       <span class="p-inputgroup-addon">кг</span>
     </div>
+    <div class="p-inputgroup">
+      <p-inputNumber [minFractionDigits]="2" [maxFractionDigits]="2" placeholder="Розмір від" formControlName="sizeFrom"
+                     mode="decimal"></p-inputNumber>
+      <span class="p-inputgroup-addon">см(+)</span>
+    </div>
   </ng-container>
   <ng-container *ngSwitchCase="steps.PRICING_AND_NOTES" formGroupName="pricingAndNotes">
     <div class="p-inputgroup">
@@ -23,11 +28,6 @@
     </div>
     <div class="p-inputgroup">
       <p-inputNumber [minFractionDigits]="2" [maxFractionDigits]="2" placeholder="Ставка підняття" formControlName="unitPriceUpdate"
-                     mode="decimal"></p-inputNumber>
-      <span class="p-inputgroup-addon">грн</span>
-    </div>
-    <div class="p-inputgroup">
-      <p-inputNumber [minFractionDigits]="2" [maxFractionDigits]="2" placeholder="Ціна завершення лоту" formControlName="ultimatePrice"
                      mode="decimal"></p-inputNumber>
       <span class="p-inputgroup-addon">грн</span>
     </div>
@@ -60,7 +60,7 @@
   </ng-container>
   <div class="button-block">
     <button
-      *ngIf="(currentStep$ | async) !== steps.PRODUCT_AND_QUANTITY"
+      *ngIf="(currentStep$ | async) !== steps.PRODUCT_QUANTITY_AND_SIZE"
       pButton
       pRipple
       type="button"
