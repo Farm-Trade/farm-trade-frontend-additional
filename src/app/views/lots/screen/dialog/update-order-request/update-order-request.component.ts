@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {BehaviorSubject, catchError, finalize, map, Observable, Observer, switchMap} from "rxjs";
+import {BehaviorSubject, catchError, finalize, map, Observable, Observer} from "rxjs";
 import {MenuItem, SelectItem} from "primeng/api";
 import {OrderRequest} from "../../../model/order-request.model";
-import {Form, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {DynamicAlertService} from "../../../../../shared/services/dynamic-alert.service";
 import {ProductNameService} from "../../../../../services/storage/product-name.service";
@@ -11,8 +11,8 @@ import {OrderRequestService} from "../../../../../services/log/order-request.ser
 import {ProductType} from "../../../../storage/enums/product-type.enum";
 import {OrderCreateStep} from "../../../enum/order-create-step.enum";
 import {CreateUpdateOrderRequestDto} from "../../../model/create-update-order-request-dto.model";
-import {ProductName} from "../../../../storage/model/product-name.model";
 import {DateUtil} from "../../../../../utils/date.util";
+import {ProductName} from "../../../../storage/model/product-name.model";
 
 @Component({
   selector: 'app-update-order-request',
@@ -23,8 +23,7 @@ export class UpdateOrderRequestComponent implements OnInit {
   public productNames: SelectItem[] = [];
   public currentStep$: Observable<OrderCreateStep>;
   public currentForm$: Observable<FormGroup>;
-  public orderRequestFromForm: CreateUpdateOrderRequestDto | undefined;
-  public selectedProductName: string;
+  public orderRequestFromForm: OrderRequest | undefined;
   public readonly steps = OrderCreateStep;
   public readonly orderRequest: OrderRequest;
   public readonly form: FormGroup;
@@ -54,13 +53,9 @@ export class UpdateOrderRequestComponent implements OnInit {
       {label: 'Підтвердження'}
     ];
     this.minDate = new Date();
-    this.selectedProductName = this.orderRequest.id ? this.orderRequest.productName.name : '';
     this.form = this.getFrom();
     const queryParams: { [key: string]: any } = {type: ProductType.APPLE, size: 10_000};
     this.productServiceName.getProductNamesAsSelectedItems(queryParams).subscribe(productNames => this.productNames = productNames)
-    this.receiveForm('productAndQuantity').controls['productName'].valueChanges.pipe(
-      map(id => this.productNames.find(({value}) => value === id))
-    ).subscribe(productName => this.selectedProductName = productName?.label || '');
   }
 
   public ngOnInit(): void {
@@ -74,7 +69,7 @@ export class UpdateOrderRequestComponent implements OnInit {
     const currentStep: OrderCreateStep = this._currentStep$.getValue() + 1;
     this._currentStep$.next(currentStep);
     if (currentStep === OrderCreateStep.REVIEW) {
-      this.orderRequestFromForm = this.fromForm(true);
+      this.orderRequestFromForm = this.buildOrderRequestFromForm();
     }
   }
 
@@ -95,8 +90,10 @@ export class UpdateOrderRequestComponent implements OnInit {
     }
     const observer: Observer<OrderRequest> = {
       next: orderRequest => this.ref.close(orderRequest),
-      error: () => {},
-      complete: () => {},
+      error: () => {
+      },
+      complete: () => {
+      },
     };
     saver.pipe(
       finalize(() => this.spinnerService.hide()),
@@ -104,26 +101,30 @@ export class UpdateOrderRequestComponent implements OnInit {
     ).subscribe(observer);
   }
 
-  private fromForm(full: boolean = false): CreateUpdateOrderRequestDto {
-    this.form.enable()
+  private fromForm(): CreateUpdateOrderRequestDto {
     const productAndQuantity = {...this.receiveForm('productAndQuantity').value};
     const pricingAndNotes = {...this.receiveForm('pricingAndNotes').value};
     const dates = {...this.receiveForm('dates').value};
-    this.updateDisabledFields(this.form);
 
     const orderRequest: CreateUpdateOrderRequestDto = {
       quantity: productAndQuantity.quantity,
       unitPrice: pricingAndNotes.unitPrice,
       ultimatePrice: pricingAndNotes.ultimatePrice,
-      notes: pricingAndNotes.notes
+      notes: pricingAndNotes.notes,
+      unitPriceUpdate: pricingAndNotes.unitPriceUpdate,
+      productName: productAndQuantity.productName,
+      loadingDate: DateUtil.toLocalDateTimeFormat(dates.loadingDate),
+      auctionEndDate: DateUtil.toLocalDateTimeFormat(dates.auctionEndDate)
     } as CreateUpdateOrderRequestDto;
-    if (!this.isUpdateWindow || full) {
-      orderRequest.unitPriceUpdate = pricingAndNotes.unitPriceUpdate;
-      orderRequest.productName = productAndQuantity.productName;
-      orderRequest.loadingDate = DateUtil.toLocalDateTimeFormat(dates.loadingDate);
-      orderRequest.auctionEndDate = DateUtil.toLocalDateTimeFormat(dates.auctionEndDate);
-    }
     return CreateUpdateOrderRequestDto.fromObject(orderRequest);
+  }
+
+  private buildOrderRequestFromForm(): OrderRequest {
+    const createUpdateOrderRequestDto: CreateUpdateOrderRequestDto = this.fromForm();
+    const productName: ProductName = this.productNames
+      .filter(({ value }) => value === createUpdateOrderRequestDto.productName)
+      .map(productName => ({ name: productName.label, id: productName.value } as ProductName))[0];
+    return OrderRequest.fromCreateUpdateOrderRequestDto(createUpdateOrderRequestDto, productName);
   }
 
   private currentFormHandler(step: OrderCreateStep): FormGroup {
@@ -133,7 +134,7 @@ export class UpdateOrderRequestComponent implements OnInit {
       case OrderCreateStep.PRICING_AND_NOTES:
         return this.receiveForm('pricingAndNotes');
       case OrderCreateStep.DATES:
-        return this.isUpdateWindow ? {valid: true} as FormGroup : this.receiveForm('dates');
+        return this.receiveForm('dates');
       case OrderCreateStep.REVIEW:
         return this.form;
       default:
@@ -160,22 +161,7 @@ export class UpdateOrderRequestComponent implements OnInit {
       loadingDate: [this.orderRequest.loadingDate ? new Date(this.orderRequest.loadingDate) : null, [Validators.required]],
       auctionEndDate: [this.orderRequest.auctionEndDate ? new Date(this.orderRequest.auctionEndDate) : null, [Validators.required]]
     });
-    const builtForm: FormGroup = this.fb.group({ productAndQuantity, pricingAndNotes, dates });
 
-    this.updateDisabledFields(builtForm);
-
-    return builtForm;
+    return this.fb.group({productAndQuantity, pricingAndNotes, dates});
   }
-
-  private updateDisabledFields(from: FormGroup): void {
-    if (this.isUpdateWindow) {
-      const productAndQuantityDisableField: string[] = ['productName'];
-      const pricingAndNotesDisableField: string[] = ['unitPriceUpdate'];
-      const datesDisableField: string[] = ['loadingDate', 'auctionEndDate'];
-      productAndQuantityDisableField.forEach(field => (from.controls['productAndQuantity'] as FormGroup).controls[field].disable());
-      pricingAndNotesDisableField.forEach(field => (from.controls['pricingAndNotes'] as FormGroup).controls[field].disable());
-      datesDisableField.forEach(field => (from.controls['dates'] as FormGroup).controls[field].disable());
-    }
-  }
-
 }

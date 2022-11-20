@@ -58,8 +58,42 @@
         </ng-container>
       </td>
       <td>
-        <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-plain" (click)="updateOrderRequest(lot)"></button>
-        <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-text p-button-plain" (click)="removeOrderRequest(lot.id)"></button>
+        <button
+          *ngIf="lot.status === orderRequestStatuses.PENDING_INFORMATION"
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-text p-button-plain"
+          (click)="updateOrderRequest(lot)"
+        ></button>
+        <button
+          *ngIf="lot.status === orderRequestStatuses.PENDING_INFORMATION"
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-eye"
+          class="p-button-rounded p-button-text p-button-plain"
+          (click)="publishOrderRequest(lot.id)"
+        ></button>
+        <button
+          *ngIf="lot.status !== orderRequestStatuses.PENDING_INFORMATION"
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-eye"
+          class="p-button-rounded p-button-text p-button-plain"
+          (click)="reviewOrderRequest(lot)"
+        ></button>
+        <button
+          *ngIf="lot.status !== orderRequestStatuses.COMPLETED"
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-text p-button-plain"
+          (click)="removeOrderRequest(lot.id)"
+        ></button>
       </td>
     </tr>
   </ng-template>

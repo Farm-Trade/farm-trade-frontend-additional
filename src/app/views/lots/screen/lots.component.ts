@@ -1,18 +1,17 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {JwtUser} from "../../../shared/entities/user/jwt-user.model";
 import {Page} from "../../../shared/entities/api/page.model";
-import {catchError, finalize, Observer, throwError} from "rxjs";
+import {catchError, finalize, Observable, Observer, throwError} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
-import {ProductNameService} from "../../../services/storage/product-name.service";
 import {AuthService} from "../../../shared/services/auth.service";
 import {DialogService} from "primeng/dynamicdialog";
 import {DynamicAlertService} from "../../../shared/services/dynamic-alert.service";
 import {SpinnerService} from "../../../services/shared/spinner.service";
 import {OrderRequest} from "../model/order-request.model";
 import {OrderRequestService} from "../../../services/log/order-request.service";
-import {Product} from "../../storage/model/product.model";
-import {UpdateProductComponent} from "../../storage/screen/dialog/update-product/update-product.component";
 import {UpdateOrderRequestComponent} from "./dialog/update-order-request/update-order-request.component";
+import {OrderRequestStatus} from "../enum/order-request-status.enum";
+import {ReviewOrderRequestComponent} from "./dialog/review-order-request/review-order-request.component";
 
 @Component({
   selector: 'app-order-request',
@@ -26,6 +25,7 @@ export class LotsComponent implements OnInit {
   public selectedOrderRequests: OrderRequest[] = [];
   public selectAll: boolean;
   public loading: boolean = false;
+  public readonly orderRequestStatuses = OrderRequestStatus;
 
   constructor(
     private readonly activateRoute: ActivatedRoute,
@@ -56,17 +56,22 @@ export class LotsComponent implements OnInit {
 
   public loadOrderRequests(config: { first: number, rows: number }): void {
     const page: number = config.first / (config.rows || 1);
-    this.getOrderRequests({ page, owner: this.user.id })
+    this.getOrderRequests({page, owner: this.user.id})
   }
 
   public getOrderRequests(queryParams: { [key: string]: any } = {}): void {
     this.loading = true;
-    const observer: Observer<Page<OrderRequest>> = { next: page => this.page = page, error: () => {}, complete: () => {} };
+    const observer: Observer<Page<OrderRequest>> = {
+      next: page => this.page = page, error: () => {
+      }, complete: () => {
+      }
+    };
     this.orderRequestService.getOrderRequests(queryParams).pipe(
       catchError(this.dynamicAlertService.handleError.bind(this.dynamicAlertService)),
       finalize(() => this.loading = false)
     ).subscribe(observer);
   }
+
   public addOrderRequest(): void {
     this.openOrderRequestModal(OrderRequest.fromObject({} as OrderRequest), false);
   }
@@ -76,16 +81,22 @@ export class LotsComponent implements OnInit {
   }
 
   public removeOrderRequest(id: number): void {
-    this.spinnerService.show();
-    const observer: Observer<void> = {
-      next: () => this.loadOrderRequests({ first: 0, rows: 0}),
-      error: () => {},
-      complete: () => {}
-    };
-    this.orderRequestService.delete(id).pipe(
-      finalize(() => this.spinnerService.hide()),
-      catchError(this.dynamicAlertService.handleError.bind(this.dynamicAlertService))
-    ).subscribe(observer);
+    this.transition(id, 'delete');
+  }
+
+  public publishOrderRequest(id: number): void {
+    this.transition(id, 'publish');
+  }
+
+  public reviewOrderRequest(orderRequest: OrderRequest): void {
+    this.dialogService.open(
+      ReviewOrderRequestComponent,
+      {
+        width: '700px',
+        data: { orderRequest },
+        header: 'Перегляд Лоту'
+      }
+    );
   }
 
   private openOrderRequestModal(orderRequest: OrderRequest, isUpdateWindow: boolean): void {
@@ -93,7 +104,7 @@ export class LotsComponent implements OnInit {
       UpdateOrderRequestComponent,
       {
         width: '700px',
-        data: { orderRequest, isUpdateWindow },
+        data: {orderRequest, isUpdateWindow},
         header: `${isUpdateWindow ? 'Змінити' : 'Створити'} Лот`
       }
     );
@@ -101,8 +112,27 @@ export class LotsComponent implements OnInit {
 
     ref.onClose.subscribe(response => {
       if (response) {
-        this.loadOrderRequests({ first: 0, rows: 0});
+        this.loadOrderRequests({first: 0, rows: 0});
       }
     })
+  }
+
+  private transition(id: number, transition: 'delete' | 'publish'): void {
+    this.spinnerService.show();
+    const observer: Observer<void> = {
+      next: () => this.loadOrderRequests({first: 0, rows: 0}),
+      error: () => {},
+      complete: () => {}
+    };
+    let action: Observable<void>;
+    if (transition === 'delete') {
+      action = this.orderRequestService.delete(id);
+    } else {
+      action = this.orderRequestService.publish(id);
+    }
+    action.pipe(
+      finalize(() => this.spinnerService.hide()),
+      catchError(this.dynamicAlertService.handleError.bind(this.dynamicAlertService))
+    ).subscribe(observer);
   }
 }

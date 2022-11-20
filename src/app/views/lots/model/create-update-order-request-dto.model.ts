@@ -4,10 +4,10 @@ export class CreateUpdateOrderRequestDto {
     public unitPrice: number,
     public ultimatePrice: number,
     public notes: string,
-    public unitPriceUpdate?: number,
-    public productName?: number,
-    public loadingDate?: string,
-    public auctionEndDate?: string,
+    public unitPriceUpdate: number,
+    public productName: number,
+    public loadingDate: string,
+    public auctionEndDate: string,
   ) {
   }
 

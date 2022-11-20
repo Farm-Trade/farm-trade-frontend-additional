@@ -34,4 +34,7 @@ export class OrderRequestService {
   public delete(id: number): Observable<void> {
     return this.httpClient.delete<void>(`${this.url}/${id}`);
   }
+  public publish(id: number): Observable<void> {
+    return this.httpClient.put<void>(`${this.url}/${id}/transition`, {});
+  }
 }

@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CreateUpdateOrderRequestDto} from "../../model/create-update-order-request-dto.model";
+import {OrderRequest} from "../../model/order-request.model";
 
 @Component({
   selector: 'app-order-request-review',
@@ -8,8 +9,7 @@ import {CreateUpdateOrderRequestDto} from "../../model/create-update-order-reque
 })
 export class OrderRequestReviewComponent implements OnInit {
 
-  @Input() orderRequest: CreateUpdateOrderRequestDto = CreateUpdateOrderRequestDto.fromObject({} as CreateUpdateOrderRequestDto);
-  @Input() productName: string = '';
+  @Input() orderRequest: OrderRequest = OrderRequest.fromObject({} as OrderRequest);
 
   constructor() {
   }

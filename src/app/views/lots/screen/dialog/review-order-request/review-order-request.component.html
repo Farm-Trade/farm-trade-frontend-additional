@@ -1,0 +1,16 @@
+<div class="dynamic-form internal">
+  <app-order-request-review
+    [orderRequest]="orderRequest"
+    [ngStyle]="{ width: '100%' }"
+  ></app-order-request-review>
+  <div class="button-block">
+    <button
+      pButton
+      pRipple
+      type="button"
+      label="Закрити"
+      class="p-button-raised p-button-text p-button-plain"
+      (click)="close()"
+    ></button>
+  </div>
+</div>

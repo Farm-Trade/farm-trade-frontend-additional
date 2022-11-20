@@ -9,6 +9,7 @@ import {LotsComponent} from "./lots/screen/lots.component";
 import { LastPriceUpdaterPipe } from './lots/pipes/last-price-updater.pipe';
 import { UpdateOrderRequestComponent } from './lots/screen/dialog/update-order-request/update-order-request.component';
 import { OrderRequestReviewComponent } from './lots/screen/order-request-review/order-request-review.component';
+import { ReviewOrderRequestComponent } from './lots/screen/dialog/review-order-request/review-order-request.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { OrderRequestReviewComponent } from './lots/screen/order-request-review/
     LotsComponent,
     LastPriceUpdaterPipe,
     UpdateOrderRequestComponent,
-    OrderRequestReviewComponent
+    OrderRequestReviewComponent,
+    ReviewOrderRequestComponent
   ],
   providers: [
     ProductService,

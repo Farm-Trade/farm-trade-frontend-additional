@@ -1,6 +1,8 @@
 import {ProductName} from "../../storage/model/product-name.model";
 import {User} from "../../../shared/entities/user/user.model";
 import {PriceUpdateHistory} from "./price-update-history.model";
+import {CreateUpdateOrderRequestDto} from "./create-update-order-request-dto.model";
+import {OrderRequestStatus} from "../enum/order-request-status.enum";
 
 export class OrderRequest {
   constructor(
@@ -11,10 +13,10 @@ export class OrderRequest {
     public ultimatePrice: number,
     public productName: ProductName,
     public notes: string,
-    public loadingDate: Date,
-    public auctionEndDate: Date,
+    public loadingDate: string,
+    public auctionEndDate: string,
     public owner: User,
-    public completed: boolean,
+    public status: OrderRequestStatus,
     public priceUpdateHistory: PriceUpdateHistory[]
   ) {
   }
@@ -34,8 +36,28 @@ export class OrderRequest {
       orderRequest.loadingDate,
       orderRequest.auctionEndDate,
       owner,
-      orderRequest.completed,
+      orderRequest.status,
       priceUpdateHistory
+    );
+  }
+
+  static fromCreateUpdateOrderRequestDto(
+    createUpdateOrderRequestDto: CreateUpdateOrderRequestDto,
+    productName: ProductName
+  ): OrderRequest {
+    return new OrderRequest(
+      0,
+      createUpdateOrderRequestDto.quantity,
+      createUpdateOrderRequestDto.unitPrice,
+      createUpdateOrderRequestDto.unitPriceUpdate,
+      createUpdateOrderRequestDto.ultimatePrice,
+      productName,
+      createUpdateOrderRequestDto.notes,
+      createUpdateOrderRequestDto.loadingDate,
+      createUpdateOrderRequestDto.auctionEndDate,
+      null as any,
+      OrderRequestStatus.PUBLISHED,
+      []
     );
   }
 }
