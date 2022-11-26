@@ -37,14 +37,7 @@ export class StorageComponent implements OnInit, AfterViewInit {
     private readonly changeDetectorRef: ChangeDetectorRef
   ) {
     this.selectAll = false;
-    this.authService.getRightUser(this.activateRoute.params)
-      .pipe(
-        catchError(errorMessage => {
-          this.dynamicAlertService.addErrorMessage(errorMessage);
-          return throwError(() => errorMessage);
-        })
-      )
-      .subscribe(user => this.user = user)
+    this.user = this.authService.getSafeUser();
   }
 
   public ngOnInit(): void {

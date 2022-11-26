@@ -2,7 +2,7 @@ export class CreateUpdateOrderRequestDto {
   constructor(
     public quantity: number,
     public unitPrice: number,
-    public ultimatePrice: number,
+    public sizeFrom: number,
     public notes: string,
     public unitPriceUpdate: number,
     public productName: number,
@@ -15,7 +15,7 @@ export class CreateUpdateOrderRequestDto {
     return new CreateUpdateOrderRequestDto(
       orderRequest.quantity,
       orderRequest.unitPrice,
-      orderRequest.ultimatePrice,
+      orderRequest.sizeFrom,
       orderRequest.notes,
       orderRequest.unitPriceUpdate,
       orderRequest.productName,

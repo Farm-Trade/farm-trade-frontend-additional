@@ -71,20 +71,15 @@ export class AuthService {
     return !!user && user.id === id;
   }
 
-  public getRightUser(params: Observable<Params>): Observable<JwtUser> {
-    return params.pipe(
-      map(({ id }) => +id),
-      switchMap( id => {
-        if (!FormUtil.isNumberCorrectId(id) || !this.isOwnUserId(id)) {
-          this.router.navigate(['/']);
-          return throwError(() => "Невірний користувач переданий");
-        }
-        return this.user$.pipe(
-          switchMap(user => user ? of(user) : throwError(() => "Користувача не існує"))
-        );
-      })
-    );
+  public getSafeUser(): JwtUser {
+    const user: JwtUser | null = this._user$.getValue();
+    if (!user) {
+      this.logout(true);
+      return null as any;
+    }
+    return user;
   }
+
   private static fromToken(token: string): JwtUser {
     const jwtParsed: JwtParsed = JwtParsed.fromObject(jwt_decode(token));
     return  JwtUser.fromJwtParsed(jwtParsed);

@@ -8,8 +8,8 @@ import {UserRole} from "./shared/entities/enums/user-role.enum";
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
-  { path: 'storage/:id', component: StorageComponent, canActivate: [AuthGuard], data: {role: UserRole.FARMER}},
-  { path: 'lots/:id', component: LotsComponent}
+  { path: 'user-storage', component: StorageComponent, canActivate: [AuthGuard], data: {role: UserRole.FARMER}},
+  { path: 'user-lots', component: LotsComponent}
 ];
 
 @NgModule({
