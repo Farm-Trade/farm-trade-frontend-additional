@@ -34,6 +34,10 @@ export class AuthService {
     this.user$ = this._user$.asObservable();
   }
 
+  public getCurrentUser(): JwtUser | null {
+    return this._user$.getValue();
+  }
+
   public isAuthenticated(): boolean {
     return !!this._user$.getValue();
   }
