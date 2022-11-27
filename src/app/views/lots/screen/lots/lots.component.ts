@@ -1,17 +1,17 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {JwtUser} from "../../../shared/entities/user/jwt-user.model";
-import {Page} from "../../../shared/entities/api/page.model";
+import {JwtUser} from "../../../../shared/entities/user/jwt-user.model";
+import {Page} from "../../../../shared/entities/api/page.model";
 import {catchError, finalize, Observable, Observer, throwError} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
-import {AuthService} from "../../../shared/services/auth.service";
+import {AuthService} from "../../../../shared/services/auth.service";
 import {DialogService} from "primeng/dynamicdialog";
-import {DynamicAlertService} from "../../../shared/services/dynamic-alert.service";
-import {SpinnerService} from "../../../services/shared/spinner.service";
-import {OrderRequest} from "../model/order-request.model";
-import {OrderRequestService} from "../../../services/log/order-request.service";
-import {UpdateOrderRequestComponent} from "./dialog/update-order-request/update-order-request.component";
-import {OrderRequestStatus} from "../enum/order-request-status.enum";
-import {ReviewOrderRequestComponent} from "./dialog/review-order-request/review-order-request.component";
+import {DynamicAlertService} from "../../../../shared/services/dynamic-alert.service";
+import {SpinnerService} from "../../../../services/shared/spinner.service";
+import {OrderRequest} from "../../model/order-request.model";
+import {OrderRequestService} from "../../../../services/log/order-request.service";
+import {UpdateOrderRequestComponent} from "../dialog/update-order-request/update-order-request.component";
+import {OrderRequestStatus} from "../../enum/order-request-status.enum";
+import {ReviewOrderRequestComponent} from "../dialog/review-order-request/review-order-request.component";
 
 @Component({
   selector: 'app-order-request',
@@ -22,13 +22,10 @@ export class LotsComponent implements OnInit {
 
   public user: JwtUser = JwtUser.fromObject({} as JwtUser);
   public page: Page<OrderRequest> | undefined;
-  public selectedOrderRequests: OrderRequest[] = [];
-  public selectAll: boolean;
   public loading: boolean = false;
   public readonly orderRequestStatuses = OrderRequestStatus;
 
   constructor(
-    private readonly activateRoute: ActivatedRoute,
     private readonly orderRequestService: OrderRequestService,
     private readonly authService: AuthService,
     private readonly dialogService: DialogService,
@@ -36,7 +33,6 @@ export class LotsComponent implements OnInit {
     private readonly spinnerService: SpinnerService,
     private readonly changeDetectorRef: ChangeDetectorRef
   ) {
-    this.selectAll = false;
     this.user = this.authService.getSafeUser();
   }
 

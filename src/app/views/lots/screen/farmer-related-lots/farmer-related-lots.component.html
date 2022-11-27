@@ -1,14 +1,5 @@
 <p-toolbar [style]="{ marginBottom: '1rem'}">
   <ng-template pTemplate="left">
-    <button
-      pButton
-      pRipple
-      label="Додати"
-      icon="pi pi-plus"
-      class="p-button-raised p-button-text p-button-plain"
-      [style]="{ marginRight: '1rem'}"
-      (click)="addOrderRequest()"
-    ></button>
   </ng-template>
 
   <ng-template pTemplate="right">
@@ -18,8 +9,6 @@
 <p-table
   [value]="page?.content || []"
   [lazy]="true"
-  [selection]="selectedOrderRequests"
-  [selectAll]="selectAll"
   [paginator]="true"
   [rows]="page?.size || 10"
   [totalRecords]="page?.totalElements || 0"
@@ -53,35 +42,35 @@
       <td>{{lot.loadingDate | date : 'dd/MM/yyyy, h:mm'}}</td>
       <td>{{lot.auctionEndDate | date : 'dd/MM/yyyy, h:mm'}}</td>
       <td>
-        <ng-container *ngIf="lot.priceUpdateHistory | lastPriceUpdater as lastPriceUpdateHistory">
+        <ng-container *ngIf="lot.priceUpdateHistory | lastPriceUpdater as lastPriceUpdateHistory; else noRate">
           {{lastPriceUpdateHistory.user.fullName}}
         </ng-container>
+        <ng-template #noRate>Немає жодної ставки</ng-template>
       </td>
       <td>
         <button
-          *ngIf="lot.status === orderRequestStatuses.PENDING_INFORMATION"
+          *ngIf="lot.priceUpdateHistory.lenght === 0 || !((lot.priceUpdateHistory | lastPriceUpdater)?.id === user.id)"
           pButton
           pRipple
           type="button"
-          icon="pi pi-pencil"
+          icon="pi pi-wallet"
           class="p-button-rounded p-button-text p-button-plain"
-          pTooltip="Редагування"
+          pTooltip="Зробити ставку"
           tooltipPosition="top"
-          (click)="updateOrderRequest(lot)"
+          (click)="updateUnitPrice(lot)"
         ></button>
         <button
-          *ngIf="lot.status === orderRequestStatuses.PENDING_INFORMATION"
+          *ngIf="(lot.priceUpdateHistory | lastPriceUpdater)?.id === user.id"
           pButton
           pRipple
           type="button"
-          icon="pi pi-arrow-circle-up"
+          icon="pi pi-wallet"
           class="p-button-rounded p-button-text p-button-plain"
-          pTooltip="Опублікувати"
+          pTooltip="Відмінити ставку"
           tooltipPosition="top"
-          (click)="publishOrderRequest(lot.id)"
+          (click)="rejectUpdateUnitPrice(lot)"
         ></button>
         <button
-          *ngIf="lot.status !== orderRequestStatuses.PENDING_INFORMATION"
           pButton
           pRipple
           type="button"
@@ -90,17 +79,6 @@
           pTooltip="Перевірити"
           tooltipPosition="top"
           (click)="reviewOrderRequest(lot)"
-        ></button>
-        <button
-          *ngIf="lot.status !== orderRequestStatuses.COMPLETED"
-          pButton
-          pRipple
-          type="button"
-          icon="pi pi-trash"
-          class="p-button-rounded p-button-text p-button-plain"
-          pTooltip="Видалити"
-          tooltipPosition="top"
-          (click)="removeOrderRequest(lot.id)"
         ></button>
       </td>
     </tr>

@@ -119,7 +119,7 @@ export class UpdateProductComponent implements OnInit {
     const from: FormGroup = this.fb.group({
       id: [this.product.id || null],
       quantity: [this.product.quantity || null, [Validators.required]],
-      size: [this.product.quantity || null, [Validators.required]],
+      size: [this.product.size || null, [Validators.required]],
       productName: [this.product.productName ? this.product.productName.id : null, [Validators.required]],
       img: [null, []]
     });

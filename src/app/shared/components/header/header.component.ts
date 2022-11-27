@@ -26,14 +26,24 @@ export class HeaderComponent implements OnInit {
 
       this.user = user;
       const additionalItems: MenuItem[] = [];
-      if ([UserRole.FARMER, UserRole.ADMIN].includes(this.user.role[0])) {
+      if (UserRole.FARMER === this.user.role[0]) {
         additionalItems.push({
             label: 'Склад',
             icon: 'pi pi-database',
             command: () => this.router.navigate(['user-storage'])
           });
+        additionalItems.push({
+          label: 'Лоти для вас',
+          icon: 'pi pi-globe',
+          command: () => this.router.navigate(['farmer-related-lots'])
+        });
+        additionalItems.push({
+          label: 'Ваші ставки',
+          icon: 'pi pi-percentage',
+          command: () => this.router.navigate(['farmer-rated-lots'])
+        });
       }
-      if ([UserRole.RESELLER, UserRole.ADMIN].includes(this.user.role[0])) {
+      if (UserRole.RESELLER === this.user.role[0]) {
         additionalItems.push({
           label: 'Лоти',
           icon: 'pi pi-code',

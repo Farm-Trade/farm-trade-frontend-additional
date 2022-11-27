@@ -37,4 +37,26 @@ export class OrderRequestService {
   public publish(id: number): Observable<void> {
     return this.httpClient.patch<void>(`${this.url}/${id}/publish`, {});
   }
+
+  public getFarmerRelatedOrderRequests(page: number): Observable<Page<OrderRequest>> {
+    const params: HttpParams = new HttpParams({ fromObject: {page} });
+    return this.httpClient.get<Page<OrderRequest>>(`${this.url}/farmer-related`, { params }).pipe(
+      map(page => Page.fromObject(page, page.content.map(OrderRequest.fromObject)))
+    );
+  }
+
+  public getFarmerRatedOrderRequests(page: number): Observable<Page<OrderRequest>> {
+    const params: HttpParams = new HttpParams({ fromObject: {page} });
+    return this.httpClient.get<Page<OrderRequest>>(`${this.url}/own-rated`, { params }).pipe(
+      map(page => Page.fromObject(page, page.content.map(OrderRequest.fromObject)))
+    );
+  }
+
+  public updateUnitPrice(id: number): Observable<OrderRequest> {
+    return this.httpClient.patch<OrderRequest>(`${this.url}/${id}/update-unit-price`, {});
+  }
+
+  public rejectUpdateUnitPrice(id: number): Observable<OrderRequest> {
+    return this.httpClient.patch<OrderRequest>(`${this.url}/${id}/reject-unit-price`, {});
+  }
 }
