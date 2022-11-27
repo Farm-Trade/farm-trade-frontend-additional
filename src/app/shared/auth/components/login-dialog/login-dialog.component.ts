@@ -53,17 +53,18 @@ export class LoginDialogComponent implements OnInit {
       finalize(() => this.form.enable())
     ).subscribe(() => {
       this.ref.close();
-      this.redirect(this.authService.getCurrentUser())
+      this.redirect()
     });
   }
 
-  private redirect(user: JwtUser | null): void {
+  private redirect(): void {
+    const user: JwtUser | null = this.authService.getCurrentUser();
     if (user) {
       if (user.role.includes(UserRole.FARMER)) {
-        this.router.navigate(['user-storage', user.id]);
+        this.router.navigate(['user-storage']);
       }
       if (user.role.includes(UserRole.RESELLER)) {
-        this.router.navigate(['user-lots', user.id]);
+        this.router.navigate(['user-lots']);
       }
       if (user.role.includes(UserRole.ADMIN)) {
         this.router.navigate(['']);
