@@ -52,7 +52,7 @@
       <td>{{lot.auctionEndDate | date : 'dd/MM/yyyy, h:mm'}}</td>
       <td>
         <ng-container *ngIf="lot.priceUpdateHistory | lastPriceUpdater as lastPriceUpdateHistory; else noRate">
-          {{lastPriceUpdateHistory.user.fullName}}
+          {{lastPriceUpdateHistory.updater.fullName}}
         </ng-container>
         <ng-template #noRate>Немає жодної ставки</ng-template>
       </td>

@@ -5,13 +5,13 @@ export class PriceUpdateHistory {
     public id: number,
     public updatedFrom: number,
     public updatedTo: number,
-    public user: User,
+    public updater: User,
     public createdAt: number
   ) {
   }
 
   public static fromObject(priceUpdateHistory: PriceUpdateHistory): PriceUpdateHistory {
-    const user: User = User.fromObject(priceUpdateHistory.user || {});
+    const user: User = User.fromObject(priceUpdateHistory.updater || {});
     return new PriceUpdateHistory(
       priceUpdateHistory.id,
       priceUpdateHistory.updatedFrom,
