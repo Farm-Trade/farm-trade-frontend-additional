@@ -1,16 +1,16 @@
 import {ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LoginFrom} from "../../enums/login-from.enum";
 import {AuthenticationDto} from "../../../entities/auth/authentication-dto.model";
 import {AuthService} from "../../../services/auth.service";
-import {catchError, finalize, throwError} from "rxjs";
-import {HttpErrorResponse} from "@angular/common/http";
+import {catchError, finalize} from "rxjs";
 import {Router} from "@angular/router";
 import {DynamicDialogRef} from "primeng/dynamicdialog";
 import {DynamicAlertService} from "../../../services/dynamic-alert.service";
-import {DynamicAlert} from "../../../entities/alert/dynamic-alert.model";
 import {AuthAction} from "../../enums/auth-action.enum";
 import {FormUtil} from "../../../../utils/form.util";
+import {JwtUser} from "../../../entities/user/jwt-user.model";
+import {UserRole} from "../../../entities/enums/user-role.enum";
 
 @Component({
   selector: 'app-auth-dialog',
@@ -53,8 +53,23 @@ export class LoginDialogComponent implements OnInit {
       finalize(() => this.form.enable())
     ).subscribe(() => {
       this.ref.close();
-      this.router.navigate(['']);
+      this.redirect()
     });
+  }
+
+  private redirect(): void {
+    const user: JwtUser | null = this.authService.getCurrentUser();
+    if (user) {
+      if (user.role.includes(UserRole.FARMER)) {
+        this.router.navigate(['user-storage']);
+      }
+      if (user.role.includes(UserRole.RESELLER)) {
+        this.router.navigate(['user-lots']);
+      }
+      if (user.role.includes(UserRole.ADMIN)) {
+        this.router.navigate(['']);
+      }
+    }
   }
 
   public onRegistration(): void {
