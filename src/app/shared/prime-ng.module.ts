@@ -4,7 +4,7 @@ import {MenubarModule} from "primeng/menubar";
 import {InputTextModule} from "primeng/inputtext";
 import {ButtonModule} from "primeng/button";
 import {DynamicDialogModule} from "primeng/dynamicdialog";
-import {MessageService, SharedModule} from "primeng/api";
+import {ConfirmationService, MessageService, SharedModule} from "primeng/api";
 import {RippleModule} from "primeng/ripple";
 import {InputMaskModule} from "primeng/inputmask";
 import {MessageModule} from "primeng/message";
@@ -26,8 +26,7 @@ import {ToastModule} from "primeng/toast";
 import {StepsModule} from "primeng/steps";
 import {CalendarModule} from "primeng/calendar";
 import {InputTextareaModule} from "primeng/inputtextarea";
-
-
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
 @NgModule({
   imports: [
@@ -56,7 +55,8 @@ import {InputTextareaModule} from "primeng/inputtextarea";
     ToastModule,
     StepsModule,
     CalendarModule,
-    InputTextareaModule
+    InputTextareaModule,
+    ConfirmDialogModule
   ],
   exports: [
     MenubarModule,
@@ -85,8 +85,9 @@ import {InputTextareaModule} from "primeng/inputtextarea";
     ToastModule,
     StepsModule,
     CalendarModule,
-    InputTextareaModule
+    InputTextareaModule,
+    ConfirmDialogModule
   ],
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
 export class PrimeNgModule { }

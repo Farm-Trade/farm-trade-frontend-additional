@@ -7,8 +7,9 @@ import {AuthService} from "../../../../shared/services/auth.service";
 import {DialogService} from "primeng/dynamicdialog";
 import {DynamicAlertService} from "../../../../shared/services/dynamic-alert.service";
 import {SpinnerService} from "../../../../services/shared/spinner.service";
-import {catchError, finalize, Observer} from "rxjs";
+import {catchError, finalize, Observer, Subject, take} from "rxjs";
 import {ReviewOrderRequestComponent} from "../dialog/review-order-request/review-order-request.component";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-farmer-related-lots',
@@ -27,6 +28,7 @@ export class FarmerRelatedLotsComponent implements OnInit {
     private readonly dynamicAlertService: DynamicAlertService,
     private readonly spinnerService: SpinnerService,
     private readonly authService: AuthService,
+    private readonly confirmationService: ConfirmationService,
     private readonly changeDetectorRef: ChangeDetectorRef
   ) {
     this.user = authService.getSafeUser();
@@ -69,16 +71,30 @@ export class FarmerRelatedLotsComponent implements OnInit {
   }
 
   public updateUnitPrice(orderRequest: OrderRequest): void {
-    this.spinnerService.show();
-    this.orderRequestService.updateUnitPrice(orderRequest.id)
-      .pipe(finalize(() => this.spinnerService.hide()))
-      .subscribe(() => this.getOrderRequests(0))
+    const updater: Subject<void> = new Subject<void>();
+    updater.asObservable().pipe(take(1)).subscribe(() => {
+      this.spinnerService.show();
+      this.orderRequestService.updateUnitPrice(orderRequest.id)
+        .pipe(finalize(() => this.spinnerService.hide()))
+        .subscribe(() => this.getOrderRequests(0));
+    })
+    const isFirstRate: boolean = !orderRequest.priceUpdateHistory.find(({ updater }) => updater.id === this.user.id);
+    if (!isFirstRate) {
+      updater.next();
+      return;
+    }
+    this.confirmationService.confirm({
+      message: 'Після того як хтось підвищить вашу ставку, кількісь продукту зарезервується! Всеодно зробити ставку?',
+      acceptLabel: 'Так',
+      rejectLabel: 'Ні',
+      accept: () => updater.next()
+    });
   }
 
   public rejectUpdateUnitPrice(orderRequest: OrderRequest): void {
     this.spinnerService.show();
     this.orderRequestService.rejectUpdateUnitPrice(orderRequest.id)
       .pipe(finalize(() => this.spinnerService.hide()))
-      .subscribe(() => this.getOrderRequests(0))
+      .subscribe(() => this.getOrderRequests(0));
   }
 }
