@@ -7,7 +7,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {GetControlPipe} from './pipes/get-control.pipe';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {InputTextareaModule} from "primeng/inputtextarea";
 
 
@@ -23,7 +23,8 @@ import {InputTextareaModule} from "primeng/inputtextarea";
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule
 
   ],
   exports: [
@@ -34,7 +35,8 @@ import {InputTextareaModule} from "primeng/inputtextarea";
     HttpClientModule,
     BrowserAnimationsModule,
     GetControlPipe,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class SharedCustomModule {

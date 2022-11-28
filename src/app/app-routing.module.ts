@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'user-storage', component: StorageComponent, canActivate: [AuthGuard], data: {role: UserRole.FARMER}},
   { path: 'farmer-related-lots', component: FarmerRelatedLotsComponent, canActivate: [AuthGuard], data: {role: UserRole.FARMER}},
   { path: 'farmer-rated-lots', component: OwnRatedLotsComponent, canActivate: [AuthGuard], data: {role: UserRole.FARMER}},
-  { path: 'user-lots', component: LotsComponent, canActivate: [AuthGuard], data: {role: UserRole.RESELLER}}
+  { path: 'lots', component: LotsComponent }
 ];
 
 @NgModule({

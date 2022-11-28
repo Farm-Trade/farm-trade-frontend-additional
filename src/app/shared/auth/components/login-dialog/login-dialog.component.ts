@@ -60,11 +60,8 @@ export class LoginDialogComponent implements OnInit {
   private redirect(): void {
     const user: JwtUser | null = this.authService.getCurrentUser();
     if (user) {
-      if (user.role.includes(UserRole.FARMER)) {
-        this.router.navigate(['user-storage']);
-      }
-      if (user.role.includes(UserRole.RESELLER)) {
-        this.router.navigate(['user-lots']);
+      if (user.role.includes(UserRole.FARMER) || user.role.includes(UserRole.RESELLER)) {
+        this.router.navigate(['lots']);
       }
       if (user.role.includes(UserRole.ADMIN)) {
         this.router.navigate(['']);

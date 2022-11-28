@@ -49,7 +49,7 @@
       </td>
       <td>
         <button
-          *ngIf="lot.priceUpdateHistory.lenght === 0 || !((lot.priceUpdateHistory | lastPriceUpdater)?.id === user.id)"
+          *ngIf="lot.priceUpdateHistory.lenght === 0 || !((lot.priceUpdateHistory | lastPriceUpdater)?.updater?.id === user.id)"
           pButton
           pRipple
           type="button"
@@ -60,7 +60,7 @@
           (click)="updateUnitPrice(lot)"
         ></button>
         <button
-          *ngIf="(lot.priceUpdateHistory | lastPriceUpdater)?.id === user.id"
+          *ngIf="(lot.priceUpdateHistory | lastPriceUpdater)?.updater?.id === user.id"
           pButton
           pRipple
           type="button"

@@ -1,6 +1,7 @@
 <p-toolbar [style]="{ marginBottom: '1rem'}">
   <ng-template pTemplate="left">
     <button
+      *ngIf="isReseller"
       pButton
       pRipple
       label="Додати"
@@ -12,6 +13,10 @@
   </ng-template>
 
   <ng-template pTemplate="right">
+    <ng-container *ngIf="isReseller">
+      <h6 style="margin-right: 1rem">Тільки мої лоти</h6>
+      <p-inputSwitch (onChange)="onLotsSelectionChanged()"  [(ngModel)]="onlyOwnLots"></p-inputSwitch>
+    </ng-container>
   </ng-template>
 </p-toolbar>
 
@@ -58,7 +63,7 @@
       </td>
       <td>
         <button
-          *ngIf="lot.status === orderRequestStatuses.PENDING_INFORMATION"
+          *ngIf="lot.status === orderRequestStatuses.PENDING_INFORMATION && isReseller"
           pButton
           pRipple
           type="button"
@@ -69,7 +74,7 @@
           (click)="updateOrderRequest(lot)"
         ></button>
         <button
-          *ngIf="lot.status === orderRequestStatuses.PENDING_INFORMATION"
+          *ngIf="lot.status === orderRequestStatuses.PENDING_INFORMATION && isReseller"
           pButton
           pRipple
           type="button"
@@ -91,7 +96,7 @@
           (click)="reviewOrderRequest(lot)"
         ></button>
         <button
-          *ngIf="lot.status !== orderRequestStatuses.COMPLETED"
+          *ngIf="lot.status !== orderRequestStatuses.COMPLETED && isReseller"
           pButton
           pRipple
           type="button"

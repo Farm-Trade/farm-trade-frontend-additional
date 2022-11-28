@@ -27,6 +27,7 @@ import {StepsModule} from "primeng/steps";
 import {CalendarModule} from "primeng/calendar";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {InputSwitchModule} from "primeng/inputswitch";
 
 @NgModule({
   imports: [
@@ -56,7 +57,8 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
     StepsModule,
     CalendarModule,
     InputTextareaModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    InputSwitchModule
   ],
   exports: [
     MenubarModule,
@@ -86,7 +88,8 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
     StepsModule,
     CalendarModule,
     InputTextareaModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    InputSwitchModule
   ],
   providers: [MessageService, ConfirmationService]
 })

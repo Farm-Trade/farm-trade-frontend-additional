@@ -12,6 +12,7 @@ import { OrderRequestReviewComponent } from './lots/screen/order-request-review/
 import { ReviewOrderRequestComponent } from './lots/screen/dialog/review-order-request/review-order-request.component';
 import { FarmerRelatedLotsComponent } from './lots/screen/farmer-related-lots/farmer-related-lots.component';
 import { OwnRatedLotsComponent } from './lots/screen/own-rated-lots/own-rated-lots.component';
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({

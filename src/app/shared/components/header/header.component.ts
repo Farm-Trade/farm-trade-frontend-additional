@@ -13,6 +13,7 @@ import {UserRole} from "../../entities/enums/user-role.enum";
 export class HeaderComponent implements OnInit {
 
   public userMenuItems: MenuItem[] = [];
+  public menuItems: MenuItem[] = [];
   public user: JwtUser = JwtUser.fromObject({} as JwtUser);
 
   constructor(
@@ -25,43 +26,8 @@ export class HeaderComponent implements OnInit {
       }
 
       this.user = user;
-      const additionalItems: MenuItem[] = [];
-      if (UserRole.FARMER === this.user.role[0]) {
-        additionalItems.push({
-            label: 'Склад',
-            icon: 'pi pi-database',
-            command: () => this.router.navigate(['user-storage'])
-          });
-        additionalItems.push({
-          label: 'Лоти для вас',
-          icon: 'pi pi-globe',
-          command: () => this.router.navigate(['farmer-related-lots'])
-        });
-        additionalItems.push({
-          label: 'Ваші ставки',
-          icon: 'pi pi-percentage',
-          command: () => this.router.navigate(['farmer-rated-lots'])
-        });
-      }
-      if (UserRole.RESELLER === this.user.role[0]) {
-        additionalItems.push({
-          label: 'Лоти',
-          icon: 'pi pi-code',
-          command: () => this.router.navigate(['user-lots'])
-        });
-      }
-      this.userMenuItems = [
-        {
-          label: 'Профіль',
-          icon: 'pi pi-user',
-        },
-        ...additionalItems,
-        {
-          label: 'Вийти',
-          icon: 'pi pi-sign-out',
-          command: this.logout.bind(this)
-        }
-      ];
+      this.setupUserMenu();
+      this.setupMenu();
     });
   }
 
@@ -70,5 +36,25 @@ export class HeaderComponent implements OnInit {
 
   public logout(): void {
     this.authService.logout(true);
+  }
+
+  private setupUserMenu(): void {
+    this.userMenuItems.push({label: 'Профіль', icon: 'pi pi-user'});
+    if (UserRole.FARMER === this.user.role[0]) {
+      this.userMenuItems.push({
+        label: 'Склад',
+        icon: 'pi pi-database',
+        command: () => this.router.navigate(['user-storage'])
+      });
+    }
+    this.userMenuItems.push({label: 'Вийти', icon: 'pi pi-sign-out', command: this.logout.bind(this)});
+  }
+
+  private setupMenu(): void {
+    this.menuItems.push({label: 'Лоти', routerLink: ['lots']});
+    if (UserRole.FARMER === this.user.role[0]) {
+      this.menuItems.push({ label: 'Лоти для мене', routerLink: ['farmer-related-lots']});
+      this.menuItems.push({ label: 'Мої лоти', routerLink: ['farmer-rated-lots'] });
+    }
   }
 }

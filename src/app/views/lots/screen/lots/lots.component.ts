@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {JwtUser} from "../../../../shared/entities/user/jwt-user.model";
 import {Page} from "../../../../shared/entities/api/page.model";
-import {catchError, finalize, Observable, Observer, throwError} from "rxjs";
+import {catchError, finalize, map, Observable, Observer} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {DialogService} from "primeng/dynamicdialog";
@@ -12,6 +12,7 @@ import {OrderRequestService} from "../../../../services/log/order-request.servic
 import {UpdateOrderRequestComponent} from "../dialog/update-order-request/update-order-request.component";
 import {OrderRequestStatus} from "../../enum/order-request-status.enum";
 import {ReviewOrderRequestComponent} from "../dialog/review-order-request/review-order-request.component";
+import {UserRole} from "../../../../shared/entities/enums/user-role.enum";
 
 @Component({
   selector: 'app-order-request',
@@ -23,6 +24,8 @@ export class LotsComponent implements OnInit {
   public user: JwtUser = JwtUser.fromObject({} as JwtUser);
   public page: Page<OrderRequest> | undefined;
   public loading: boolean = false;
+  public onlyOwnLots: boolean;
+  public readonly isReseller: boolean;
   public readonly orderRequestStatuses = OrderRequestStatus;
 
   constructor(
@@ -34,6 +37,8 @@ export class LotsComponent implements OnInit {
     private readonly changeDetectorRef: ChangeDetectorRef
   ) {
     this.user = this.authService.getSafeUser();
+    this.isReseller = this.user.role[0] === UserRole.RESELLER;
+    this.onlyOwnLots = this.isReseller;
   }
 
   public ngOnInit(): void {
@@ -44,8 +49,13 @@ export class LotsComponent implements OnInit {
   }
 
   public loadOrderRequests(config: { first: number, rows: number }): void {
-    const page: number = config.first / (config.rows || 1);
-    this.getOrderRequests({page, owner: this.user.id})
+    const queryParams: { [key: string]: any } = { page: config.first / (config.rows || 1) };
+    if (this.onlyOwnLots) {
+      queryParams['owner'] = this.user.id;
+    } else {
+      queryParams['status'] = [OrderRequestStatus.PUBLISHED];
+    }
+    this.getOrderRequests(queryParams)
   }
 
   public getOrderRequests(queryParams: { [key: string]: any } = {}): void {
@@ -86,6 +96,10 @@ export class LotsComponent implements OnInit {
         header: 'Перегляд Лоту'
       }
     );
+  }
+
+  public onLotsSelectionChanged(): void {
+    this.loadOrderRequests({first: 0, rows: 0});
   }
 
   private openOrderRequestModal(orderRequest: OrderRequest, isUpdateWindow: boolean): void {

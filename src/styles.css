@@ -221,3 +221,7 @@ table td {
 .p-steps .p-steps-item .p-menuitem-link .p-steps-title {
   margin-bottom: 0.5rem;
 }
+
+a.p-menuitem-link-active {
+ background: rgba(59,130,246, .1);
+}
