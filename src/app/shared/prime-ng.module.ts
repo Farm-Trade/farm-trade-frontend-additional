@@ -28,6 +28,8 @@ import {CalendarModule} from "primeng/calendar";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {InputSwitchModule} from "primeng/inputswitch";
+import {TabViewModule} from "primeng/tabview";
+import {PasswordModule} from "primeng/password";
 
 @NgModule({
   imports: [
@@ -58,7 +60,9 @@ import {InputSwitchModule} from "primeng/inputswitch";
     CalendarModule,
     InputTextareaModule,
     ConfirmDialogModule,
-    InputSwitchModule
+    InputSwitchModule,
+    TabViewModule,
+    PasswordModule
   ],
   exports: [
     MenubarModule,
@@ -89,7 +93,9 @@ import {InputSwitchModule} from "primeng/inputswitch";
     CalendarModule,
     InputTextareaModule,
     ConfirmDialogModule,
-    InputSwitchModule
+    InputSwitchModule,
+    TabViewModule,
+    PasswordModule
   ],
   providers: [MessageService, ConfirmationService]
 })

@@ -13,6 +13,9 @@ import { ReviewOrderRequestComponent } from './lots/screen/dialog/review-order-r
 import { FarmerRelatedLotsComponent } from './lots/screen/farmer-related-lots/farmer-related-lots.component';
 import { OwnRatedLotsComponent } from './lots/screen/own-rated-lots/own-rated-lots.component';
 import {FormsModule} from "@angular/forms";
+import { ProfileComponent } from './profile/profile.component';
+import { UserSettingsComponent } from './profile/components/user-settings/user-settings.component';
+import { UserBusinessDetailsComponent } from './profile/components/user-bussines-details/user-business-details.component';
 
 
 @NgModule({
@@ -25,7 +28,10 @@ import {FormsModule} from "@angular/forms";
     OrderRequestReviewComponent,
     ReviewOrderRequestComponent,
     FarmerRelatedLotsComponent,
-    OwnRatedLotsComponent
+    OwnRatedLotsComponent,
+    ProfileComponent,
+    UserSettingsComponent,
+    UserBusinessDetailsComponent
   ],
   providers: [
     ProductService,

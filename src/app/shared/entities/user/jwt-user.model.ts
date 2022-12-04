@@ -6,6 +6,7 @@ export class JwtUser {
     public id: number,
     public fullName: string,
     public phone: string,
+    public email: string,
     public password: string,
     public isActive: boolean,
     public role: UserRole[]
@@ -17,6 +18,7 @@ export class JwtUser {
       jwtUser.id,
       jwtUser.fullName,
       jwtUser.phone,
+      jwtUser.email,
       jwtUser.password,
       jwtUser.isActive,
       jwtUser.role
@@ -29,6 +31,7 @@ export class JwtUser {
       jwtParsed.id,
       jwtParsed.fullName,
       jwtParsed.sub,
+      jwtParsed.email,
       notDefined,
       notDefined,
       jwtParsed.roles

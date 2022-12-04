@@ -1,0 +1,40 @@
+<div class="dynamic-form internal" [formGroup]="form">
+  <input
+    formControlName="fullName"
+    type="text"
+    pInputText
+    placeholder="Повне імя"
+  >
+  <input
+    formControlName="email"
+    type="text"
+    pInputText
+    placeholder="Емейл"
+  >
+  <input
+    formControlName="password"
+    type="password"
+    pInputText
+    autocomplete="new-password"
+    placeholder="Пароль"
+  >
+</div>
+<div class="button-block">
+  <button
+    pButton
+    pRipple
+    type="button"
+    label="Очистити"
+    class="p-button-raised p-button-text"
+    (click)="refreshForm()"
+  ></button>
+  <button
+    pButton
+    pRipple
+    type="button"
+    label="Оновити"
+    class="p-button-raised p-button-text p-button-success"
+    [disabled]="form.invalid"
+    (click)="updateUserSetting()"
+  ></button>
+</div>

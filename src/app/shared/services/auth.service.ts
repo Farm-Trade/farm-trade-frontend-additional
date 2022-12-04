@@ -21,7 +21,7 @@ export class AuthService {
     const token: string = localStorage.getItem(LocalStorage.TOKEN) as string;
     return TokenDto.fromObject({ token })
   }
-  private set token(token: TokenDto) {
+  public set token(token: TokenDto) {
     localStorage.setItem(LocalStorage.TOKEN, token.token)
     const jwtUser: JwtUser = AuthService.fromToken(token.token);
     this._user$.next(jwtUser);

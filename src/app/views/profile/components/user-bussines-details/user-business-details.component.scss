@@ -1,0 +1,19 @@
+.dynamic-form {
+  margin: 0 25%;
+}
+.dynamic-form,.button-block {
+  width: 50%;
+}
+.dynamic-form h5 {
+  margin: 0.5rem 0;
+}
+.button-block {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 1rem 25% 0 25%;
+  & button:first-child {
+    margin-right: 1rem;
+  }
+}

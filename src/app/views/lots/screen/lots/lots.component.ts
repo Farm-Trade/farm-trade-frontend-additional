@@ -44,10 +44,6 @@ export class LotsComponent implements OnInit {
   public ngOnInit(): void {
   }
 
-  public ngAfterViewInit(): void {
-    this.changeDetectorRef.detectChanges();
-  }
-
   public loadOrderRequests(config: { first: number, rows: number }): void {
     const queryParams: { [key: string]: any } = { page: config.first / (config.rows || 1) };
     if (this.onlyOwnLots) {

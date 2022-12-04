@@ -23,16 +23,11 @@ export class OwnRatedLotsComponent implements OnInit {
     private readonly orderRequestService: OrderRequestService,
     private readonly dialogService: DialogService,
     private readonly dynamicAlertService: DynamicAlertService,
-    private readonly spinnerService: SpinnerService,
-    private readonly changeDetectorRef: ChangeDetectorRef
+    private readonly spinnerService: SpinnerService
   ) {
   }
 
   ngOnInit(): void {
-  }
-
-  public ngAfterViewInit(): void {
-    this.changeDetectorRef.detectChanges();
   }
 
   public loadOrderRequests(config: { first: number, rows: number }): void {

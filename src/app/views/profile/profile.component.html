@@ -1,0 +1,10 @@
+<div class="card">
+  <p-tabView>
+    <p-tabPanel header="Налаштування користувача">
+      <app-user-settings></app-user-settings>
+    </p-tabPanel>
+    <p-tabPanel *ngIf="isFarmer" header="Деталі підприємства">
+      <app-user-business-details></app-user-business-details>
+    </p-tabPanel>
+  </p-tabView>
+</div>

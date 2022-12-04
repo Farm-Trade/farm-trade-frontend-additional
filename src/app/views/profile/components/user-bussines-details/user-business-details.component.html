@@ -1,0 +1,41 @@
+<div class="dynamic-form internal" [formGroup]="form">
+  <input
+    formControlName="name"
+    type="text"
+    pInputText
+    placeholder="Назва підприємства"
+  >
+  <input
+    formControlName="address"
+    type="text"
+    pInputText
+    placeholder="Адреса складу"
+  >
+  <h5>Тип оплати</h5>
+  <p-selectButton
+    [options]="paymentOptions"
+    formControlName="paymentType"
+    optionLabel="label"
+    optionValue="value"
+  ></p-selectButton>
+</div>
+<div class="button-block">
+  <button
+    pButton
+    pRipple
+    type="button"
+    label="Очистити"
+    class="p-button-raised p-button-text"
+    [disabled]="!businessDetails"
+    (click)="refreshForm()"
+  ></button>
+  <button
+    pButton
+    pRipple
+    type="button"
+    label="Оновити"
+    class="p-button-raised p-button-text p-button-success"
+    [disabled]="form.invalid"
+    (click)="update()"
+  ></button>
+</div>

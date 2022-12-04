@@ -24,7 +24,8 @@ export class HeaderComponent implements OnInit {
       if (!user) {
         return;
       }
-
+      this.userMenuItems = [];
+      this.menuItems = [];
       this.user = user;
       this.setupUserMenu();
       this.setupMenu();
@@ -39,7 +40,7 @@ export class HeaderComponent implements OnInit {
   }
 
   private setupUserMenu(): void {
-    this.userMenuItems.push({label: 'Профіль', icon: 'pi pi-user'});
+    this.userMenuItems.push({label: 'Профіль', icon: 'pi pi-user', routerLink: ['profile']});
     if (UserRole.FARMER === this.user.role[0]) {
       this.userMenuItems.push({
         label: 'Склад',
