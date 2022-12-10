@@ -7,7 +7,10 @@ import {PriceUpdateHistory} from "../model/price-update-history.model";
 export class LastPriceUpdaterPipe implements PipeTransform {
 
   transform(priceUpdateHistory: PriceUpdateHistory[]): PriceUpdateHistory | null {
-    const lastPriceUpdate: PriceUpdateHistory = priceUpdateHistory[priceUpdateHistory.length - 1];
+    const sortedPriceUpdates: PriceUpdateHistory[] = priceUpdateHistory.sort(
+      (a, b) => (new Date(a.createdAt)).getTime() - (new Date(b.createdAt)).getTime()
+    );
+    const lastPriceUpdate: PriceUpdateHistory = sortedPriceUpdates[priceUpdateHistory.length - 1];
     return lastPriceUpdate || null;
   }
 

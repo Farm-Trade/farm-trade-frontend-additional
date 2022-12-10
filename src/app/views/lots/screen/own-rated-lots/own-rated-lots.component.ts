@@ -18,13 +18,16 @@ import {ReviewOrderRequestComponent} from "../dialog/review-order-request/review
 export class OwnRatedLotsComponent implements OnInit {
   public page: Page<OrderRequest> | undefined;
   public loading: boolean = false;
+  public readonly user: JwtUser;
 
   constructor(
     private readonly orderRequestService: OrderRequestService,
     private readonly dialogService: DialogService,
     private readonly dynamicAlertService: DynamicAlertService,
+    private readonly authService: AuthService,
     private readonly spinnerService: SpinnerService
   ) {
+    this.user = this.authService.getSafeUser();
   }
 
   ngOnInit(): void {
