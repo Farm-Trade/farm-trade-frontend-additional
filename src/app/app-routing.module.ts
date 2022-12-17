@@ -11,11 +11,12 @@ import {ProfileComponent} from "./views/profile/profile.component";
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
-  { path: 'user-storage', component: StorageComponent, canActivate: [AuthGuard], data: {role: UserRole.FARMER}},
-  { path: 'farmer-related-lots', component: FarmerRelatedLotsComponent, canActivate: [AuthGuard], data: {role: UserRole.FARMER}},
-  { path: 'farmer-rated-lots', component: OwnRatedLotsComponent, canActivate: [AuthGuard], data: {role: UserRole.FARMER}},
+  { path: 'user-storage', component: StorageComponent, canActivate: [AuthGuard], data: { role: UserRole.FARMER }},
+  { path: 'farmer-related-lots', component: FarmerRelatedLotsComponent, canActivate: [AuthGuard], data: { role: UserRole.FARMER }},
+  { path: 'farmer-rated-lots', component: OwnRatedLotsComponent, canActivate: [AuthGuard], data: { role: UserRole.FARMER }},
   { path: 'profile', component: ProfileComponent },
-  { path: 'lots', component: LotsComponent }
+  { path: 'lots', component: LotsComponent, data: { isCompletedLots: false } },
+  { path: 'completed-lots', component: LotsComponent, data: { role: UserRole.RESELLER, isCompletedLots: true } }
 ];
 
 @NgModule({

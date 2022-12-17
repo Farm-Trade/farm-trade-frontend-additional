@@ -1,0 +1,9 @@
+<div class="winner-container">
+  <app-price-update-history
+    *ngFor="let priceUpdateHistory of priceUpdateHistories"
+    [priceUpdateHistory]="priceUpdateHistory"
+    [styles]="{width: '300px'}"
+    (action)="selectWinner($event)"
+    actionName="Обрати"
+  ></app-price-update-history>
+</div>

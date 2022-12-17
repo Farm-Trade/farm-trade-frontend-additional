@@ -1,4 +1,5 @@
 import {UserRole} from "../enums/user-role.enum";
+import {BusinessDetails} from "../../../views/profile/model/business-details.model";
 
 export class User {
   constructor(
@@ -8,7 +9,8 @@ export class User {
     public phone: string,
     public email: string,
     public isActive: boolean,
-    public role: UserRole
+    public role: UserRole,
+    public businessDetails: null | BusinessDetails
   ) {
   }
 
@@ -20,7 +22,8 @@ export class User {
       user.phone,
       user.email,
       user.isActive,
-      user.role
+      user.role,
+      user.businessDetails
     );
   }
 }

@@ -16,6 +16,9 @@ import {FormsModule} from "@angular/forms";
 import { ProfileComponent } from './profile/profile.component';
 import { UserSettingsComponent } from './profile/components/user-settings/user-settings.component';
 import { UserBusinessDetailsComponent } from './profile/components/user-bussines-details/user-business-details.component';
+import { SelectWinnerComponent } from './lots/screen/dialog/select-winner/select-winner.component';
+import { PaymentTypeTranslatorPipe } from './lots/pipes/paymnet-type-translator.pipe';
+import { PriceUpdateHistoryComponent } from './lots/screen/component/price-update-hisory/price-update-history.component';
 
 
 @NgModule({
@@ -31,7 +34,10 @@ import { UserBusinessDetailsComponent } from './profile/components/user-bussines
     OwnRatedLotsComponent,
     ProfileComponent,
     UserSettingsComponent,
-    UserBusinessDetailsComponent
+    UserBusinessDetailsComponent,
+    SelectWinnerComponent,
+    PaymentTypeTranslatorPipe,
+    PriceUpdateHistoryComponent
   ],
   providers: [
     ProductService,

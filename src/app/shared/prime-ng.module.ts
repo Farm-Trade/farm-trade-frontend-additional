@@ -30,6 +30,8 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {InputSwitchModule} from "primeng/inputswitch";
 import {TabViewModule} from "primeng/tabview";
 import {PasswordModule} from "primeng/password";
+import {CardModule} from "primeng/card";
+import {OverlayPanelModule} from "primeng/overlaypanel";
 
 @NgModule({
   imports: [
@@ -62,7 +64,9 @@ import {PasswordModule} from "primeng/password";
     ConfirmDialogModule,
     InputSwitchModule,
     TabViewModule,
-    PasswordModule
+    PasswordModule,
+    CardModule,
+    OverlayPanelModule
   ],
   exports: [
     MenubarModule,
@@ -95,7 +99,9 @@ import {PasswordModule} from "primeng/password";
     ConfirmDialogModule,
     InputSwitchModule,
     TabViewModule,
-    PasswordModule
+    PasswordModule,
+    CardModule,
+    OverlayPanelModule
   ],
   providers: [MessageService, ConfirmationService]
 })

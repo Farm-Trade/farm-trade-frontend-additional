@@ -4,6 +4,7 @@ import {map, Observable} from "rxjs";
 import {Page} from "../../shared/entities/api/page.model";
 import {OrderRequest} from "../../views/lots/model/order-request.model";
 import {CreateUpdateOrderRequestDto} from "../../views/lots/model/create-update-order-request-dto.model";
+import {PriceUpdateHistory} from "../../views/lots/model/price-update-history.model";
 
 @Injectable({
   providedIn: 'root'
@@ -58,5 +59,9 @@ export class OrderRequestService {
 
   public rejectUpdateUnitPrice(id: number): Observable<OrderRequest> {
     return this.httpClient.patch<OrderRequest>(`${this.url}/${id}/reject-unit-price`, {});
+  }
+
+  public selectWinner(id: number, priceUpdateHistory: PriceUpdateHistory): Observable<void> {
+    return this.httpClient.post<void>(`${this.url}/${id}/select-winner/${(priceUpdateHistory.updater.id)}`, {});
   }
 }

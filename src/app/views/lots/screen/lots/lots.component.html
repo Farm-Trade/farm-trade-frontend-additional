@@ -1,7 +1,7 @@
 <p-toolbar [style]="{ marginBottom: '1rem'}">
   <ng-template pTemplate="left">
     <button
-      *ngIf="isReseller"
+      *ngIf="isReseller && !isCompletedLots"
       pButton
       pRipple
       label="Додати"
@@ -13,7 +13,7 @@
   </ng-template>
 
   <ng-template pTemplate="right">
-    <ng-container *ngIf="isReseller">
+    <ng-container *ngIf="isReseller && !isCompletedLots">
       <h6 style="margin-right: 1rem">Тільки мої лоти</h6>
       <p-inputSwitch (onChange)="onLotsSelectionChanged()"  [(ngModel)]="onlyOwnLots"></p-inputSwitch>
     </ng-container>
@@ -26,6 +26,7 @@
   [paginator]="true"
   [rows]="page?.size || 10"
   [totalRecords]="page?.totalElements || 0"
+  [lazyLoadOnInit]="false"
   [loading]="loading"
   (onLazyLoad)="loadOrderRequests($event)"
   responsiveLayout="scroll"
@@ -41,7 +42,8 @@
       <th>Розмір від</th>
       <th>Дата відправки</th>
       <th>Дата кінця лоту</th>
-      <th>Остання ставка</th>
+      <th *ngIf="!isCompletedLots">Остання ставка</th>
+      <th *ngIf="isCompletedLots">Переможець лоту</th>
       <th></th>
     </tr>
   </ng-template>
@@ -55,11 +57,33 @@
       <td>{{lot.sizeFrom}}см</td>
       <td>{{lot.loadingDate | date : 'dd/MM/yyyy, h:mm'}}</td>
       <td>{{lot.auctionEndDate | date : 'dd/MM/yyyy, h:mm'}}</td>
-      <td>
+      <td *ngIf="!isCompletedLots">
         <ng-container *ngIf="lot.priceUpdateHistory | lastPriceUpdater as lastPriceUpdateHistory; else noRate">
           {{lastPriceUpdateHistory.updater.fullName}}
         </ng-container>
         <ng-template #noRate>Немає жодної ставки</ng-template>
+      </td>
+      <td *ngIf="isCompletedLots">
+        <button
+          *ngIf="lot.priceUpdateHistory.length !== 1; else showWinner"
+          pButton
+          pRipple
+          type="button"
+          label="Вибрати переможця"
+          class="p-button-rounded p-button-info"
+          (click)="onWinnerSelected(lot)"
+        ></button>
+        <ng-template #showWinner>
+          <button
+            *ngIf="lot.priceUpdateHistory[0] as puh"
+            pButton
+            pRipple
+            type="button"
+            class="p-button-info p-button-text"
+            [label]="puh.updater.fullName"
+            (click)="onWinnerToggle($event, puh)"
+          ></button>
+        </ng-template>
       </td>
       <td>
         <button
@@ -110,3 +134,10 @@
     </tr>
   </ng-template>
 </p-table>
+
+<p-overlayPanel #winner [showCloseIcon]="true" [style]="{width: '450px'}">
+  <app-price-update-history
+    [priceUpdateHistory]="selectedPriceUpdateHistory"
+    [styles]="{boxShadow: 'none'}"
+  ></app-price-update-history>
+</p-overlayPanel>

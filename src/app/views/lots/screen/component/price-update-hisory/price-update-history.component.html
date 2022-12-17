@@ -1,0 +1,22 @@
+<p-card
+  [header]="priceUpdateHistory?.updater?.fullName || ''"
+  [subheader]="priceUpdateHistory?.updater?.phone || ''"
+  [style]="styles"
+  styleClass="p-card-shadow"
+>
+
+  <p><strong>Ставка</strong>: {{priceUpdateHistory?.updatedTo}}</p>
+  <ng-container *ngIf="priceUpdateHistory?.updater?.businessDetails as businessDetails">
+    <p *ngIf="businessDetails?.name"><strong>Назва підприємства</strong>: {{businessDetails.name}}</p>
+    <p *ngIf="businessDetails?.paymentType"><strong>Тип оплати</strong>: {{businessDetails.paymentType | paymentTypeTranslator}}</p>
+    <p *ngIf="businessDetails?.address"><strong>Адреса</strong>: {{businessDetails.address}}</p>
+  </ng-container>
+  <ng-template pTemplate="footer">
+    <p-button
+      *ngIf="actionName"
+      [label]="actionName"
+      (click)="action.emit(priceUpdateHistory)"
+      icon="pi pi-check"
+    ></p-button>
+  </ng-template>
+</p-card>

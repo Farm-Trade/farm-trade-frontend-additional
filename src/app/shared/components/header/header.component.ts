@@ -4,6 +4,7 @@ import {AuthService} from "../../services/auth.service";
 import {JwtUser} from "../../entities/user/jwt-user.model";
 import {Router} from "@angular/router";
 import {UserRole} from "../../entities/enums/user-role.enum";
+import {User} from "../../entities/user/user.model";
 
 @Component({
   selector: 'app-header',
@@ -56,6 +57,8 @@ export class HeaderComponent implements OnInit {
     if (UserRole.FARMER === this.user.role[0]) {
       this.menuItems.push({ label: 'Лоти для мене', routerLink: ['farmer-related-lots']});
       this.menuItems.push({ label: 'Мої лоти', routerLink: ['farmer-rated-lots'] });
+    } else if (UserRole.RESELLER === this.user.role[0]) {
+      this.menuItems.push({label: 'Завершені лоти', routerLink: ['completed-lots']});
     }
   }
 }
