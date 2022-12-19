@@ -11,4 +11,4 @@ RUN npm install
 
 COPY . ./
 
-CMD ["npm", "start-with-proxy"]
+CMD ["npm run", "start-with-proxy"]
