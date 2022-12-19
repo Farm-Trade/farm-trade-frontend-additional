@@ -1,9 +1,14 @@
-FROM node:latest AS ngbuilder
-WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm install
-COPY . .
-#RUN npm run test
-RUN npm install -g @angular/cli
+FROM node:16.0.0-alpine
 
-CMD ["/bin/sh",  "-c",  "npm run start-with-proxy"]
+WORKDIR /app
+
+## add `/app/node_modules/.bin` to $PATH
+#ENV PATH /app/node_modules/.bin:$PATH
+
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm install
+
+COPY . ./
+
+CMD ["npm", "start-with-proxy"]
